@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Navigator API
+  version: 0.0.1
+  description: RESTful API для навигации по маршрутрам
+
+servers:
+  - url: https://localhost:8080/navigator
+    x-environment: local
+    
+paths:
+  /navigator/route/{id-from}/{id-to}/{shortest}:
+      get:
+        summary: Найти самый короткий (или длинный) маршрут между указанными локациями
+        parameters:
+          - name: id-from
+            in: path
+            description: id локации откуда
+            required: true
+            schema:
+              type: integer
+              format: int64
+              minimum: 1
+              example: 10
+          - name: id-to
+            in: path
+            description: id локации куда
+            required: true
+            schema:
+              type: integer
+              format: int64
+              minimum: 1
+              example: 10
+          - name: shortest
+            in: path
+            description: Если `true`, берем самый короткий маршрут, иначе самый длинный
+            required: true
+            schema:
+              type: boolean
+        responses:
+          '200':
+            description: Успешный ответ с массивом маршрутов
+            content:
+              application/json:
+                schema:
+                  title: RouteResponse
+                  type: object
+                  properties:
+                    routes:
+                      type: array
+                      items:
+                        $ref: '../route-management-service-api/api.yaml#/components/schemas/Route'
+          '204':
+            $ref: '../common/responses.yaml#/components/responses/204'
+          '400':
+            $ref: '../common/responses.yaml#/components/responses/400'
+          '500':
+            $ref: '../common/responses.yaml#/components/responses/500'
+          '503':
+            $ref: '../common/responses.yaml#/components/responses/503'
+  
+  /navigator/route/add/{id-from}/{id-to}/{distance}:
+    post:
+      summary: Добавить новый маршрут
+      parameters:
+        - name: id-from
+          in: path
+          description: id локации откуда
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            example: 10
+        - name: id-to
+          in: path
+          description: id локации куда
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            example: 10
+        - name: distance
+          in: path
+          description: Дистанция маршрута
+          required: true
+          schema:
+            type: number
+            format: double
+      responses:
+        '201':
+          description: Маршрут успешно создан
+          content:
+            application/json:
+              schema:
+                  $ref: '../route-management-service-api/api.yaml#/components/schemas/Route'
+        '400':
+          $ref: '../common/responses.yaml#/components/responses/400'
+        '500':
+          $ref: '../common/responses.yaml#/components/responses/500'
+        '503':
+          $ref: '../common/responses.yaml#/components/responses/503'
