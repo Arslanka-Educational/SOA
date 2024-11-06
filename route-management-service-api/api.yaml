@@ -1,0 +1,529 @@
+openapi: 3.0.0
+info:
+  title: Route Management API
+  version: 0.0.1
+  description: RESTful API для управления коллекцией объектов класса Route
+
+servers:
+  - url: https://localhost:8080/route-management
+    x-environment: local
+    
+paths:
+  /routes:
+    get:
+      summary: Получить список маршрутов с возможностью сортировки, фильтрации и пагинации
+      parameters:
+        - name: limit
+          in: query
+          description: Количество элементов в выдаче
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
+        - name: offset
+          in: query
+          description: Сдвиг по элементам от начала
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
+        - name: sortBy
+          in: query
+          description: Параметры для сортировки
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - id
+                - name
+                - coordinates
+                - creationDate
+                - from
+                - to
+                - distance
+            example: name
+        - name: sortDirection
+          in: query
+          description: Направление сортировки
+          required: false
+          schema:
+            type: string
+            default: ASC
+            enum:
+              - ASC
+              - DESC
+            example: ASC
+        - name: minId
+          in: query
+          description: Минимальный id маршрута
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            format: int32
+            example: 25
+        - name: maxId
+          in: query
+          description: Максимальный id маршрута
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            format: int32
+            example: 52
+        - name: name
+          in: query
+          description: Название маршрута
+          required: false
+          schema:
+            type: string
+            minLength: 1
+        - name: minX
+          in: query
+          description: Минимальная координата х
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: -1
+        - name: maxX
+          in: query
+          description: Максимальная координата х
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: minY
+          in: query
+          description: Минимальная координата y
+          required: false
+          schema:
+            type: number
+            format: double
+            example: -1337.3
+        - name: maxY
+          in: query
+          description: Максимальная координата y
+          required: false
+          schema:
+            type: number
+            format: double
+            example: 1337.3
+        - name: minCreationDate
+          in: query
+          description: Дата создания должна быть позже
+          required: false
+          schema:
+            type: string
+            format: date-time
+            nullable: false
+            example: 2003-10-17T11:02:15Z
+        - name: maxCreationDate
+          in: query
+          description: Дата создания должна быть раньше или равна
+          required: false
+          schema:
+            type: string
+            format: date-time
+            nullable: false
+            example: 2024-10-17T11:02:15Z
+        - name: fromLocationX
+          in: query
+          description: Минимальное координата X откуда
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: toLocationX
+          in: query
+          description: Максимальная координата X откуда
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: fromLocationY
+          in: query
+          description: Минимальное координата Y откуда
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: toLocationY
+          in: query
+          description: Максимальная координата Y откуда
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: fromLocationZ
+          in: query
+          description: Координата Z откуда
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: toLocationZ
+          in: query
+          description: Координата Z куда
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: distance
+          in: query
+          description: Дистанция маршрута
+          required: false
+          schema:
+            type: number
+            format: double
+        - name: nameStartsWithSubstr
+          in: query
+          description: Имя маршрута начинается с заданной подстроки
+          required: false
+          schema:
+            type: string
+            minLength: 1
+      responses:
+        '200':
+          description: Успешный ответ с массивом маршрутов
+          content:
+            application/json:
+              schema:
+                title: RouteResponse
+                type: object
+                properties:
+                  routes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Route'
+                  total:
+                    type: integer
+                    description: Общее количество элементов
+                  limit:
+                    type: integer
+                    description: Количество элементов
+                  offset:
+                    type: integer
+                    description: Сдвиг по элементам
+        '204':
+          $ref: '#/components/responses/204'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+
+    post:
+      summary: Добавить новый маршрут
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteUpsertRequest'
+      responses:
+        '201':
+          description: Маршрут успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+    
+
+  /routes/{id}:
+    get:
+      summary: Получить маршрут по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Информация о маршруте
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+            $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+          
+            
+    put:
+      summary: Обновить маршрут по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteUpsertRequest'
+      responses:
+        '200':
+          description: Маршрут успешно обновлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+            $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+
+    delete:
+      summary: Удалить маршрут по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: distance
+          in: query
+          description: Удалить маршрут с указанным значением distance
+          schema:
+            type: number
+      responses:
+        '204':
+          description: Маршрут успешно удален (если найден)
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+            $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+  
+  /routes/distances/{distance}:
+    delete:
+      summary: Удалить либой маршрут с дистанцией равной заданной
+      parameters:
+        - name: distance
+          in: path
+          required: true
+          description: Удалить маршрут с указанным значением distance
+          schema:
+            type: number
+            format: double
+      responses:
+        '204':
+          description: Маршрут успешно удален (если найден)
+        '400':
+          $ref: '#/components/responses/400'
+        '404':
+            $ref: '#/components/responses/404'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+
+  /routes/count:
+    get:
+      summary: Получить количество маршрутов, удовлетворяющих критериям
+      parameters:
+        - name: maxDistance
+          in: query
+          description: Максимальное значение меньше distance
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: Количество маршрутов, удовлетворяющих критериям
+          content:
+            application/json:
+              schema:
+                type: integer
+        '400':
+          $ref: '#/components/responses/400'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+
+components:
+  responses:
+    '200':
+      description: Успешно
+    '204':
+      description: Нет контента
+    '400':
+      description: Некорретный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Повторяющийся запрос, вызывающий конфликт
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '503':
+      description: Сервис временно недоступен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+  schemas:
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор маршрута
+          readOnly: true
+          minimum: 1
+          format: int64
+          nullable: false
+        name:
+          type: string
+          description: Название маршрута
+          minLength: 1
+          nullable: false
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: false
+        from:
+          $ref: '#/components/schemas/Location'
+        to:
+          $ref: '#/components/schemas/Location'
+        distance:
+          $ref: '#/components/schemas/Distance'
+      required:
+        - id
+        - name
+        - coordinates
+        - creationDate
+        
+
+    RouteUpsertRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        from:
+          $ref: '#/components/schemas/Location'
+        to:
+          $ref: '#/components/schemas/Location'
+        distance:
+          $ref: '#/components/schemas/Distance'
+      required:
+        - name
+        - coordinates
+        - distance
+
+    Coordinates:
+      type: object
+      nullable: true
+      properties:
+        x:
+          type: integer
+          format: int32
+          nullable: false
+        y:
+          type: number
+          maximum: 610
+          format: double
+          nullable: false
+      required:
+        - x
+        - y
+
+    Location:
+      type: object
+      nullable: true
+      properties:
+        x:
+          type: integer
+          format: int32
+          nullable: false
+        y:
+          type: integer
+          format: int32
+          nullable: true
+        z:
+          type: integer
+          format: int64
+          nullable: false
+        name:
+          type: string
+          nullable: true
+          maxLength: 517
+      required:
+        - x
+        - z
+    
+    Distance:
+      description: Дистанция до маршрута
+      type: number
+      format: double
+      minimum: 1
+      nullable: false
+    
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Машиночитаемая строка, которую можно использовать для индивидуальной обработки ошибок и мониторинга
+          type: string
+          example: 'BadRequest'
+        message:
+          description: Человекочитаемое сообщение, может использоваться в логах
+          type: string
+          example: Invalid request. Error description will be returned in the response body
