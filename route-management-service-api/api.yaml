@@ -6,11 +6,15 @@ info:
 
 servers:
   - url: https://localhost:8080/route-management
-    x-environment: local
+    x-environment: 
+      - local
+      - prod
     
 paths:
   /routes:
     get:
+      tags:
+        - Route
       summary: Получить список маршрутов с возможностью сортировки, фильтрации и пагинации
       parameters:
         - name: limit
@@ -220,6 +224,8 @@ paths:
           $ref: '#/components/responses/503'
 
     post:
+      tags:
+        - Route
       summary: Добавить новый маршрут
       requestBody:
         required: true
@@ -244,6 +250,8 @@ paths:
 
   /routes/{id}:
     get:
+      tags:
+        - Route
       summary: Получить маршрут по ID
       parameters:
         - name: id
@@ -270,6 +278,8 @@ paths:
           
             
     put:
+      tags:
+        - Route
       summary: Обновить маршрут по ID
       parameters:
         - name: id
@@ -301,6 +311,8 @@ paths:
           $ref: '#/components/responses/503'
 
     delete:
+      tags:
+        - Route
       summary: Удалить маршрут по ID
       parameters:
         - name: id
@@ -328,6 +340,8 @@ paths:
   
   /routes/distances/{distance}:
     delete:
+      tags:
+        - Route
       summary: Удалить либой маршрут с дистанцией равной заданной
       parameters:
         - name: distance
@@ -351,9 +365,11 @@ paths:
 
   /routes/count:
     get:
+      tags:
+        - Route
       summary: Получить количество маршрутов, удовлетворяющих критериям
       parameters:
-        - name: maxDistance
+        - name: maxDistanceAllowed
           in: query
           description: Максимальное значение меньше distance
           schema:
