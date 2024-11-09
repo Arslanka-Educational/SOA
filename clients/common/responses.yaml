@@ -57,4 +57,3 @@ components:
           description: Человекочитаемое сообщение, может использоваться в логах
           type: string
           example: Invalid request. Error description will be returned in the response body
-    
