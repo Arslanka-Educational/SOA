@@ -6,11 +6,15 @@ info:
 
 servers:
   - url: https://localhost:8080/navigator
-    x-environment: local
+    x-environment: 
+      - local
+      - prod
     
 paths:
   /navigator/route/{id-from}/{id-to}/{shortest}:
       get:
+        tags:
+          - Distance
         summary: Найти самый короткий (или длинный) маршрут между указанными локациями
         parameters:
           - name: id-from
@@ -61,6 +65,8 @@ paths:
   
   /navigator/route/add/{id-from}/{id-to}/{distance}:
     post:
+      tags:
+          - Distance
       summary: Добавить новый маршрут
       parameters:
         - name: id-from
