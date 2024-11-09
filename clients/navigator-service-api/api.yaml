@@ -54,6 +54,8 @@ paths:
             $ref: '../common/responses.yaml#/components/responses/204'
           '400':
             $ref: '../common/responses.yaml#/components/responses/400'
+          '404':
+            $ref: '../common/responses.yaml#/components/responses/404'
           '500':
             $ref: '../common/responses.yaml#/components/responses/500'
           '503':
@@ -97,6 +99,8 @@ paths:
                   $ref: '../route-management-service-api/api.yaml#/components/schemas/Route'
         '400':
           $ref: '../common/responses.yaml#/components/responses/400'
+        '404':
+          $ref: '../common/responses.yaml#/components/responses/404'
         '500':
           $ref: '../common/responses.yaml#/components/responses/500'
         '503':

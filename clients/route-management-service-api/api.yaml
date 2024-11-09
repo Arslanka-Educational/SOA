@@ -1,4 +1,4 @@
-sopenapi: 3.0.0
+openapi: 3.0.0
 info:
   title: Route Management API
   version: 0.0.1
@@ -36,158 +36,117 @@ paths:
           schema:
             type: array
             items:
+              type: object
+              title: SortFieldDirection
+              required:
+                - field
+                - direction
+              properties:
+                field:
+                  type: string
+                  enum:
+                    - id
+                    - name
+                    - coordinates
+                    - creationDate
+                    - from
+                    - to
+                    - distance
+                  example: name
+                direction:
+                  type: string
+                  default: ASC
+                  enum:
+                    - ASC
+                    - DESC
+                  example: ASC
+        - name: filter
+          in: query
+          description: Параметры для сортировки
+          required: false
+          schema:
+            type: object
+            properties:
+              minId:
+                description: Минимальный id маршрута
+                type: integer
+                minimum: 1
+                format: int32
+                example: 25
+            maxId:
+                description: Максимальный id маршрута
+                minimum: 1
+                type: integer
+                format: int32
+                example: 52
+            name:
+              description: Название маршрута
               type: string
-              enum:
-                - id
-                - name
-                - coordinates
-                - creationDate
-                - from
-                - to
-                - distance
-            example: name
-        - name: sortDirection
-          in: query
-          description: Направление сортировки
-          required: false
-          schema:
-            type: string
-            default: ASC
-            enum:
-              - ASC
-              - DESC
-            example: ASC
-        - name: minId
-          in: query
-          description: Минимальный id маршрута
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            format: int32
-            example: 25
-        - name: maxId
-          in: query
-          description: Максимальный id маршрута
-          required: false
-          schema:
-            minimum: 1
-            type: integer
-            format: int32
-            example: 52
-        - name: name
-          in: query
-          description: Название маршрута
-          required: false
-          schema:
-            type: string
-            minLength: 1
-        - name: minX
-          in: query
-          description: Минимальная координата х
-          required: false
-          schema:
-            type: integer
-            format: int32
-            example: -1
-        - name: maxX
-          in: query
-          description: Максимальная координата х
-          required: false
-          schema:
-            type: integer
-            format: int32
-            example: 1
-        - name: minY
-          in: query
-          description: Минимальная координата y
-          required: false
-          schema:
-            type: number
-            format: double
-            example: -1337.3
-        - name: maxY
-          in: query
-          description: Максимальная координата y
-          required: false
-          schema:
-            type: number
-            format: double
-            example: 1337.3
-        - name: minCreationDate
-          in: query
-          description: Дата создания должна быть позже
-          required: false
-          schema:
-            type: string
-            format: date-time
-            nullable: false
-            example: 2003-10-17T11:02:15Z
-        - name: maxCreationDate
-          in: query
-          description: Дата создания должна быть раньше или равна
-          required: false
-          schema:
-            type: string
-            format: date-time
-            nullable: false
-            example: 2024-10-17T11:02:15Z
-        - name: fromLocationX
-          in: query
-          description: Минимальное координата X откуда
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: toLocationX
-          in: query
-          description: Максимальная координата X откуда
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: fromLocationY
-          in: query
-          description: Минимальное координата Y откуда
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: toLocationY
-          in: query
-          description: Максимальная координата Y откуда
-          required: false
-          schema:
-            type: integer
-            format: int32
-        - name: fromLocationZ
-          in: query
-          description: Координата Z откуда
-          required: false
-          schema:
-            type: integer
-            format: int64
-        - name: toLocationZ
-          in: query
-          description: Координата Z куда
-          required: false
-          schema:
-            type: integer
-            format: int64
-        - name: distance
-          in: query
-          description: Дистанция маршрута
-          required: false
-          schema:
-            type: number
-            format: double
-        - name: nameStartsWithSubstr
-          in: query
-          description: Имя маршрута начинается с заданной подстроки
-          required: false
-          schema:
-            type: string
-            minLength: 1
+              minLength: 1
+            minX:
+              description: Минимальная координата х
+              type: integer
+              format: int32
+              example: -1
+            maxX:
+              description: Максимальная координата х
+              type: integer
+              format: int32
+              example: 1
+            minY:
+              description: Минимальная координата y
+              type: number
+              format: double
+              example: -1337.3
+            maxY:
+              description: Максимальная координата y
+              type: number
+              format: double
+              example: 1337.3
+            minCreationDate:
+              description: Дата создания должна быть позже
+              type: string
+              format: date-time
+              nullable: false
+              example: 2003-10-17T11:02:15Z
+            maxCreationDate:
+              description: Дата создания должна быть раньше или равна
+              type: string
+              format: date-time
+              nullable: false
+              example: 2024-10-17T11:02:15Z
+            fromLocationX:
+              description: Минимальное координата X откуда
+              type: integer
+              format: int32
+            toLocationX:
+              description: Максимальная координата X откуда
+              type: integer
+              format: int32
+            fromLocationY:
+              description: Минимальное координата Y откуда
+              type: integer
+              format: int32
+            toLocationY:
+              description: Максимальная координата Y откуда
+              type: integer
+              format: int32
+            fromLocationZ:
+              description: Координата Z откуда
+              type: integer
+              format: int64
+            toLocationZ:
+              description: Координата Z куда
+              type: integer
+              format: int64
+            distance:
+              description: Дистанция маршрута
+              type: number
+              format: double
+            nameStartsWithSubstr:
+              description: Имя маршрута начинается с заданной подстроки
+              type: string
+              minLength: 1
       responses:
         '200':
           description: Успешный ответ с массивом маршрутов
@@ -226,7 +185,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: /components/schemas/RouteUpsertRequest'
+              $ref: '#/components/schemas/RouteUpsertRequest'
       responses:
         '201':
           description: Маршрут успешно создан
@@ -236,6 +195,8 @@ paths:
                 $ref: '#/components/schemas/Route'
         '400':
           $ref: '../common/responses.yaml#/components/responses/400'
+        '404':
+          $ref: '../common/responses.yaml#/components/responses/404'
         '500':
           $ref: '../common/responses.yaml#components/responses/500'
         '503':
@@ -317,6 +278,10 @@ paths:
       responses:
         '204':
           description: Маршрут успешно удален (если найден)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
         '400':
           $ref: '../common/responses.yaml#/components/responses/400'
         '404':
@@ -338,8 +303,12 @@ paths:
             type: number
             format: double
       responses:
-        '204':
+        204':
           description: Маршрут успешно удален (если найден)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
         '400':
           $ref: '../common/responses.yaml#/components/responses/400'
         '404':
@@ -409,7 +378,6 @@ components:
         - coordinates
         - creationDate
         
-
     RouteUpsertRequest:
       type: object
       properties:

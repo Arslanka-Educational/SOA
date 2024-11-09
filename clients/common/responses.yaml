@@ -42,4 +42,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Машиночитаемая строка, которую можно использовать для индивидуальной обработки ошибок и мониторинга
+          type: string
+          example: 'BadRequest'
+        message:
+          description: Человекочитаемое сообщение, может использоваться в логах
+          type: string
+          example: Invalid request. Error description will be returned in the response body
     
