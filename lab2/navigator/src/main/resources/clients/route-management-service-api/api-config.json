@@ -1,0 +1,10 @@
+{
+  "apiPackage": "ru.route.api",
+  "modelPackage": "ru.route.dto",
+  "library": "jvm-ktor",
+  "modelNameSuffix": "Dto",
+  "removeOperationIdPrefix": true,
+  "useTags": true,
+  "interfaceOnly": true,
+  "skipDefaultInterfaces": true
+}
