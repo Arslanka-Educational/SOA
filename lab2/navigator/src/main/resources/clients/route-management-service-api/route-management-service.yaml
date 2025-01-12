@@ -7,11 +7,16 @@ info:
 servers:
   - url: https://localhost:8080/route-management
     x-environment: local
+  - url: https://89.169.147.9:8080/route-management
+    x-environment: prod
     
 paths:
   /routes:
     get:
       summary: Получить список маршрутов с возможностью сортировки, фильтрации и пагинации
+      tags:
+        - Routes
+      operationId: getRoutes
       parameters:
         - name: limit
           in: query
@@ -164,16 +169,19 @@ paths:
                     type: integer
                     description: Сдвиг по элементам
         '204':
-          $ref: '../common/responses.yaml#/components/responses/204'
+          $ref: '../../common/responses.yaml#/components/responses/204'
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '500':
-          $ref: '../common/responses.yaml#/components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
 
     post:
       summary: Добавить новый маршрут
+      tags:
+        - Routes
+      operationId: postRoute
       requestBody:
         required: true
         content:
@@ -188,18 +196,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/Route'
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '404':
-          $ref: '../common/responses.yaml#/components/responses/404'
+          $ref: '../../common/responses.yaml#/components/responses/404'
         '500':
-          $ref: '../common/responses.yaml#components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
     
 
   /routes/{id}:
     get:
       summary: Получить маршрут по ID
+      tags:
+        - Routes
+      operationId: getRouteById
       parameters:
         - name: id
           in: path
@@ -215,17 +226,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/Route'
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '404':
-          $ref: '../common/responses.yaml#/components/responses/404'
+          $ref: '../../common/responses.yaml#/components/responses/404'
         '500':
-          $ref: '../common/responses.yaml#/components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
           
             
     put:
       summary: Обновить маршрут по ID
+      tags:
+        - Routes
+      operationId: updateRouteById
       parameters:
         - name: id
           in: path
@@ -247,16 +261,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/Route'
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '404':
-          $ref: '../common/responses.yaml#/components/responses/404'
+          $ref: '../../common/responses.yaml#/components/responses/404'
         '500':
-          $ref: '../common/responses.yaml#/components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
 
     delete:
       summary: Удалить маршрут по ID
+      tags:
+        - Routes
+      operationId: deleteRouteById
       parameters:
         - name: id
           in: path
@@ -277,17 +294,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/Route'
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '404':
-          $ref: '../common/responses.yaml#/components/responses/404'
+          $ref: '../../common/responses.yaml#/components/responses/404'
         '500':
-          $ref: '../common/responses.yaml#/components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
   
   /routes/distances/{distance}:
     delete:
       summary: Удалить либой маршрут с дистанцией равной заданной
+      tags:
+        - Routes
+      operationId: deleteRouteByDistance
       parameters:
         - name: distance
           in: path
@@ -304,17 +324,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/Route'
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '404':
-            $ref: '../common/responses.yaml#/components/responses/404'
+            $ref: '../../common/responses.yaml#/components/responses/404'
         '500':
-          $ref: '../common/responses.yaml#/components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
 
   /routes/count:
     get:
       summary: Получить количество маршрутов, удовлетворяющих критериям
+      tags:
+        - Routes
+      operationId: getRoutesCounts
       parameters:
         - name: maxDistance
           in: query
@@ -330,11 +353,11 @@ paths:
               schema:
                 type: integer
         '400':
-          $ref: '../common/responses.yaml#/components/responses/400'
+          $ref: '../../common/responses.yaml#/components/responses/400'
         '500':
-          $ref: '../common/responses.yaml#/components/responses/500'
+          $ref: '../../common/responses.yaml#/components/responses/500'
         '503':
-          $ref: '../common/responses.yaml#/components/responses/503'
+          $ref: '../../common/responses.yaml#/components/responses/503'
 
 components:
   schemas:

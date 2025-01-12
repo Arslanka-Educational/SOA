@@ -1,0 +1,59 @@
+openapi: 3.0.1
+info:
+  description: Common responses definitions file
+  title: Common Responses
+  version: 0.0.1
+
+paths: { }
+
+components:
+  responses:
+    '200':
+      description: Успешно
+    '204':
+      description: Нет контента
+    '400':
+      description: Некорретный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Повторяющийся запрос, вызывающий конфликт
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Внутренняя ошибка сервера
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '503':
+      description: Сервис временно недоступен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+     Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Машиночитаемая строка, которую можно использовать для индивидуальной обработки ошибок и мониторинга
+          type: string
+          example: 'BadRequest'
+        message:
+          description: Человекочитаемое сообщение, может использоваться в логах
+          type: string
+          example: Invalid request. Error description will be returned in the response body
