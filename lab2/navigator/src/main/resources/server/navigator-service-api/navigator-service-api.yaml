@@ -96,6 +96,16 @@ paths:
           schema:
             type: number
             format: double
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            title: RouteAddRequest
+            type: object
+            properties:
+              name:
+                type: string
       responses:
         '201':
           description: Маршрут успешно создан

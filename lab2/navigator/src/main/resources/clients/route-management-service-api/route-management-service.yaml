@@ -359,6 +359,35 @@ paths:
         '503':
           $ref: '../../common/responses.yaml#/components/responses/503'
 
+  /locations:
+    get:
+      summary: Получить локацию по идентификатору
+      tags:
+        - Locations
+      operationId: getLocationById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            nullable: false
+      responses:
+        '200':
+          description: Локация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '400':
+          $ref: '../../common/responses.yaml#/components/responses/400'
+        '404':
+          $ref: '../../common/responses.yaml#/components/responses/404'
+        '500':
+          $ref: '../../common/responses.yaml#/components/responses/500'
+        '503':
+          $ref: '../../common/responses.yaml#/components/responses/503'
 components:
   schemas:
     Route:
@@ -394,6 +423,7 @@ components:
         - name
         - coordinates
         - creationDate
+        - distance
         
     RouteUpsertRequest:
       type: object

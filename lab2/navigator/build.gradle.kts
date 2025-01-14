@@ -32,6 +32,7 @@ dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("javax.servlet:javax.servlet-api:4.0.1")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
