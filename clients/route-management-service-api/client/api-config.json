@@ -1,0 +1,10 @@
+{
+  "apiPackage": "generated.com.ifmo.se.route.api",
+  "modelPackage": "generated.com.ifmo.se.route.dto",
+  "library": "jvm-ktor",
+  "modelNameSuffix": "Dto",
+  "removeOperationIdPrefix": true,
+  "useTags": true,
+  "interfaceOnly": true,
+  "skipDefaultInterfaces": true
+}
