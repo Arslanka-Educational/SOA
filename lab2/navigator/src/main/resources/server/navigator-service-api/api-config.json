@@ -1,8 +1,0 @@
-{
-  "apiPackage": "ru.navigator.api",
-  "modelPackage": "ru.navigator.dto",
-  "library": "spring-boot",
-  "modelNameSuffix": "Dto",
-  "removeOperationIdPrefix": true,
-  "useTags": true
-}
