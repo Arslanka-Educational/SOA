@@ -103,13 +103,7 @@ paths:
         content:
           application/json:
             schema:
-            title: RouteAddRequest
-            type: object
-            properties:
-              name:
-                type: string
-            required:
-              - name
+              $ref: '#/components/schemas/RouteAddRequest'
       responses:
         '201':
           description: Маршрут успешно создан
@@ -162,25 +156,6 @@ components:
         - coordinates
         - creationDate
 
-    RouteUpsertRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-        coordinates:
-          $ref: '#/components/schemas/Coordinates'
-        from:
-          $ref: '#/components/schemas/Location'
-        to:
-          $ref: '#/components/schemas/Location'
-        distance:
-          $ref: '#/components/schemas/Distance'
-      required:
-        - name
-        - coordinates
-        - distance
-
     Coordinates:
       type: object
       nullable: true
@@ -228,3 +203,13 @@ components:
       format: double
       minimum: 1
       nullable: false
+
+    RouteAddRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+      required:
+        - name

@@ -1,0 +1,8 @@
+client:
+  route-management:
+    server:
+      name: route-management
+      url: https://localhost:8080/route-management
+    tls:
+      group: ''
+      trustAny: true
