@@ -1,6 +1,11 @@
 spring:
+  application:
+    name: navigator
   main:
     banner-mode: "off"
+
+server:
+  port: 80
 
 logging:
   level:
