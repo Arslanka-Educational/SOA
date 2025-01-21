@@ -4,6 +4,8 @@ import com.ifmo.se.navigator.models.Coordinate
 import com.ifmo.se.navigator.models.EnrichedRoute
 import com.ifmo.se.navigator.models.LocationId
 import com.ifmo.se.navigator.models.Route
+import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
+import generated.com.ifmo.se.route.dto.SortFieldsDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
@@ -33,4 +35,28 @@ class NavigatorService(
                 )
             )
         }
+
+    internal suspend fun getRouteBetweenLocations(
+        idFrom: LocationId,
+        idTo: LocationId,
+        shortest: Boolean,
+    ): EnrichedRoute? {
+        val filterParameters = GetRoutesFilterParameterDto(
+            locationIdFrom = idFrom.id,
+            locationIdTo = idTo.id,
+        )
+
+        val sortField = if (shortest) {
+            SortFieldsDto.Distance
+        } else {
+            SortFieldsDto.MinusDistance
+        }
+
+        return routeManagementService.getRouteFirstMatched(
+            filter = filterParameters,
+            sortBy = listOf(sortField),
+            limit = 1,
+            offset = 0,
+        )
+    }
 }

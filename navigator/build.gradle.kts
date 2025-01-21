@@ -123,3 +123,26 @@ tasks.named("compileJava") {
     dependsOn("generateServer")
     dependsOn("generateClients")
 }
+
+tasks.register("deploy") {
+    dependsOn("war")
+    doLast {
+        exec {
+            executable("java")
+            args(
+                "-jar",
+                "-Djava.net.preferIPv4Stack=true",
+                "-Djavax.net.ssl.keyStore=../keystore.jks",
+                "-Djavax.net.ssl.keyStorePassword=123456",
+                "-Dpayaramicro.sslPort=1282",
+                "payara-micro.jar",
+                "--deploy",
+                "${layout.buildDirectory}/libs/starships-service.war",
+                "--port",
+                "8079",
+                "--sslCert",
+                "soa-lab-keystore"
+            )
+        }
+    }
+}

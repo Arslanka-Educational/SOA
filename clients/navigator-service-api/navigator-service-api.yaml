@@ -44,17 +44,11 @@ paths:
               type: boolean
         responses:
           '200':
-            description: Успешный ответ с массивом маршрутов
+            description: Успешный ответ с маршрутом
             content:
               application/json:
                 schema:
-                  title: RouteResponse
-                  type: object
-                  properties:
-                    routes:
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/Route'
+                  $ref: '#/components/schemas/Route'
           '204':
             $ref: '../../common/responses.yaml#/components/responses/204'
           '400':

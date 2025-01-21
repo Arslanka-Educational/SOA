@@ -31,4 +31,14 @@ class NavigatorController(
     }.let {
         ResponseEntity.ok(it.toNavigatorRouteDto())
     }
+
+    override fun getRoute(idFrom: Long, idTo: Long, shortest: Boolean): ResponseEntity<RouteDto> = runBlocking {
+        navigatorService.getRouteBetweenLocations(
+            idFrom = LocationId(idFrom),
+            idTo = LocationId(idTo),
+            shortest = shortest,
+        ).let {
+            ResponseEntity.ok(it?.toNavigatorRouteDto())
+        }
+    }
 }
