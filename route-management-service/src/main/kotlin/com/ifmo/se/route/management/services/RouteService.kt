@@ -1,9 +1,6 @@
 package org.example.com.ifmo.se.route.management.services
 
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.RouteDto
-import generated.com.ifmo.se.route.dto.RouteResponseDto
-import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
+import generated.com.ifmo.se.route.dto.*
 import org.springframework.data.domain.Sort
 
 interface RouteService {
@@ -11,7 +8,7 @@ interface RouteService {
         filter: GetRoutesFilterParameterDto?,
         offset: Int?,
         limit: Int?,
-        sortBy: List<String>?,
+        sortBy: List<SortFieldsDto>?,
         sortDirection: Sort.Direction = Sort.Direction.ASC
     ): RouteResponseDto
 

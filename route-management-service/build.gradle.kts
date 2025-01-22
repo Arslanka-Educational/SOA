@@ -10,7 +10,7 @@ plugins {
 
 group = "com.ifmo.se.route.management"
 version = "1.0-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenCentral()
@@ -59,13 +59,13 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
 }
 
@@ -85,7 +85,7 @@ tasks.register("generateServer") {
                 "-g", "kotlin-spring",
                 "-o", "build/generated-server/$serverName",
                 "--additional-properties=interfaceOnly=true",
-                "--config", "../clients/$serverName/client/api-config.json",
+                "--config", "../clients/$serverName/server/api-config.json",
                 "--skip-validate-spec",
                 "--global-property=apis,models,supportingFiles,useTags"
             )

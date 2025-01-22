@@ -1,9 +1,7 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.RouteDto
-import generated.com.ifmo.se.route.dto.RouteResponseDto
-import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
+import generated.com.ifmo.se.route.dto.*
+import io.ktor.util.*
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
 import mu.KLogging
@@ -32,14 +30,14 @@ class RouteServiceImpl(
         filter: GetRoutesFilterParameterDto?,
         offset: Int?,
         limit: Int?,
-        sortBy: List<String>?,
+        sortBy: List<SortFieldsDto>?,
         sortDirection: Sort.Direction
     ): RouteResponseDto {
         val sort: Sort = if (!sortBy.isNullOrEmpty()) {
-            Sort.by(sortBy.map { Sort.Order(sortDirection, it) })
+            Sort.by(sortBy.map { Sort.Order(sortDirection, it.value.toLowerCasePreservingASCIIRules()) })
         } else {
             Sort.unsorted()
-        }
+        } //todo добавить фильтрацию по двум локациям
 
         val pageable: Pageable = PageRequest.of(offset ?: 0, limit ?: 10, sort)
         val specification = filter?.let { RouteSpecification(it) } ?: Specification.where(null)

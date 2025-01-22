@@ -16,21 +16,10 @@ data class Route(
     @Column(nullable = false)
     var distance: Double,
 
-//    @AttributeOverrides(
-//        AttributeOverride(name = "x", column = Column(name = "from_x")),
-//        AttributeOverride(name = "z", column = Column(name = "from_z")),
-//        AttributeOverride(name = "y", column = Column(name = "from_y")),
-//        AttributeOverride(name = "name", column = Column(name = "from_name"))
-//    )
+    @ManyToOne
     var from: Location? = null,
 
-    @Embedded
-    @AttributeOverrides(
-        AttributeOverride(name = "x", column = Column(name = "to_x")),
-        AttributeOverride(name = "z", column = Column(name = "to_z")),
-        AttributeOverride(name = "y", column = Column(name = "to_y")),
-        AttributeOverride(name = "name", column = Column(name = "to_name"))
-    )
+    @ManyToOne
     var to: Location? = null
 ) : BaseEntity()
 
