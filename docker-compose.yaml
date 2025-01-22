@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  navigator:
+    build:
+      context: ./navigator
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - shared-network
+
+networks:
+  shared-network:

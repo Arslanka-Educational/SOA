@@ -15,7 +15,9 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
+    }
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("io.ktor:ktor-client-core:2.0.0")
@@ -33,6 +35,7 @@ dependencies {
     implementation("javax.servlet:javax.servlet-api:4.0.1")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
+    implementation("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
@@ -131,17 +134,18 @@ tasks.register("deploy") {
             executable("java")
             args(
                 "-jar",
+                "-Dspring.profiles.active=local",
                 "-Djava.net.preferIPv4Stack=true",
-                "-Djavax.net.ssl.keyStore=../keystore.jks",
-                "-Djavax.net.ssl.keyStorePassword=123456",
-                "-Dpayaramicro.sslPort=1282",
-                "payara-micro.jar",
+                // "-Djavax.net.ssl.keyStore=../keystore.jks",
+                // "-Djavax.net.ssl.keyStorePassword=123456",
+                // "-Dpayaramicro.sslPort=1282",
+                "payara-micro-6.2025.1.jar",
                 "--deploy",
-                "${layout.buildDirectory}/libs/starships-service.war",
+                "build/libs/navigator-1.0-SNAPSHOT.war",
                 "--port",
-                "8079",
-                "--sslCert",
-                "soa-lab-keystore"
+                "8080",
+                // "--sslCert",
+                // "soa-lab-keystore"
             )
         }
     }

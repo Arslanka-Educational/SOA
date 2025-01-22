@@ -9,6 +9,7 @@ import generated.com.ifmo.se.navigator.dto.RouteAddRequestDto
 import generated.com.ifmo.se.navigator.dto.RouteDto
 import kotlinx.coroutines.runBlocking
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 
 class NavigatorController(
     private val navigatorService: NavigatorService,
