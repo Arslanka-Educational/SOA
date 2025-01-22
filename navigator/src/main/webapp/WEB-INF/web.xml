@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!-- Параметры контекста -->
+    <context-param>
+        <param-name>configLocation</param-name>
+        <param-value>/WEB-INF/spring/applicationContext.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>anotherParameter</param-name>
+        <param-value>someValue</param-value>
+    </context-param>
+
+    <!-- Дефиниция сервлета как пример -->
+    <servlet>
+        <servlet-name>exampleServlet</servlet-name>
+        <servlet-class>com.example.ExampleServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>exampleServlet</servlet-name>
+        <url-pattern>/example</url-pattern>
+    </servlet-mapping>
+</web-app>
