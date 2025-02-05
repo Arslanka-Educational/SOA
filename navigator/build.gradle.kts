@@ -1,5 +1,3 @@
-import com.mkring.wildlydeplyplugin.DeployWildflyTask
-
 plugins {
     kotlin("jvm") version "1.9.23"
     id("org.springframework.boot") version "3.2.0"
