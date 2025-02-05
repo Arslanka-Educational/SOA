@@ -7,18 +7,18 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class ApiConfig(
+open class ApiConfig(
     @Value("\${client.route-management.server.url}")
     private val routeManagementUrl: String,
 ) {
 
     @Bean
-    fun locationsApi() = LocationsApi(
+    open fun locationsApi() = LocationsApi(
         baseUrl = routeManagementUrl,
     )
 
     @Bean
-    fun routesApi() = RoutesApi(
+    open fun routesApi() = RoutesApi(
         baseUrl = routeManagementUrl,
     )
 }

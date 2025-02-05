@@ -7,11 +7,16 @@ import com.ifmo.se.navigator.services.NavigatorService
 import generated.com.ifmo.se.navigator.api.NavigatorApi
 import generated.com.ifmo.se.navigator.dto.RouteAddRequestDto
 import generated.com.ifmo.se.navigator.dto.RouteDto
+import io.swagger.v3.oas.annotations.Parameter
 import kotlinx.coroutines.runBlocking
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
+import javax.validation.constraints.Min
 
-class NavigatorController(
+@RestController
+open class NavigatorController(
     private val navigatorService: NavigatorService,
 ) : NavigatorApi {
     override fun addRoute(

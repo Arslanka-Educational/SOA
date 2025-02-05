@@ -1,11 +1,21 @@
-package generated.com.ifmo.seopenbook
+package com.ifmo.se.navigator
 
+import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
-@SpringBootApplication
-open class Application
 
-fun main(args: Array<String>) {
-    runApplication<Application>(*args)
+@SpringBootApplication(scanBasePackages = ["com.ifmo.se.navigator", "generated.com.ifmo.se.navigator"])
+open class Application : SpringBootServletInitializer() {
+    override fun configure(builder: SpringApplicationBuilder): SpringApplicationBuilder {
+        return builder.sources(Application::class.java)
+    }
+
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
 }
