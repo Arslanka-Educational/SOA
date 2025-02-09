@@ -3,6 +3,8 @@ spring:
     name: navigator
   main:
     banner-mode: "off"
+  profiles:
+    active: local
 
 server:
   port: 8080

@@ -1,4 +1,4 @@
-package generated.com.ifmo.seopenbook.com.ifmo.se.navigator.configs
+package com.ifmo.se.navigator.com.ifmo.se.navigator.configs
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry

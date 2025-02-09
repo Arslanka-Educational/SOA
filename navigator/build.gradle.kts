@@ -4,6 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.3"
     id("org.openapi.generator") version "7.0.0"
     id("war")
+    id("com.mkring.wildlydeplyplugin.deploy-wildfly-plugin") version "0.3.0"
 }
 
 group = "com.ifmo.se.navigator"
@@ -39,6 +40,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
+configurations {
+    all {
+        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+        exclude(group = "ch.qos.logback", module = "logback-classic")
+        exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
+    }
+}
 tasks.test {
     useJUnitPlatform()
 }
@@ -73,7 +81,7 @@ tasks.register("generateServer") {
                 "--config",
                 "../clients/$serverName/server/api-config.json",
                 "--skip-validate-spec",
-                "--global-property=apis,models,supportingFiles,useTags"
+                "--global-property=apis,models,useTags"
             )
         }
     }
@@ -85,8 +93,8 @@ val generatedCodeDir = projectDir.resolve("build/generated-clients")
 tasks.register("generateClients") {
     doLast {
         openApiSpecsDir.walkTopDown().filter { file ->
-                file.isFile && (file.extension == "yaml") && File("../clients/${file.parentFile.nameWithoutExtension}/client/api-config.json").exists()
-            }
+            file.isFile && (file.extension == "yaml") && File("../clients/${file.parentFile.nameWithoutExtension}/client/api-config.json").exists()
+        }
             .forEach { specFile ->
                 val clientName = specFile.nameWithoutExtension
                 val outputDir = generatedCodeDir.resolve(clientName)
@@ -101,7 +109,7 @@ tasks.register("generateClients") {
                         "-o", outputDir.absolutePath,
                         "--config", "../clients/${specFile.parentFile.nameWithoutExtension}/client/api-config.json",
                         "--skip-validate-spec",
-                        "--global-property=apis,models,supportingFiles,useTags"
+                        "--global-property=apis,models,useTags"
                     )
                 }
             }
@@ -125,28 +133,4 @@ tasks.named("compileKotlin") {
 tasks.named("compileJava") {
     dependsOn("generateServer")
     dependsOn("generateClients")
-}
-
-tasks.register("deploy") {
-    dependsOn("war")
-    doLast {
-        exec {
-            executable("java")
-            args(
-                "-jar",
-                "-Dspring.profiles.active=local",
-                "-Djava.net.preferIPv4Stack=true",
-                // "-Djavax.net.ssl.keyStore=../keystore.jks",
-                // "-Djavax.net.ssl.keyStorePassword=123456",
-                // "-Dpayaramicro.sslPort=1282",
-                "payara-micro-6.2025.1.jar",
-                "--deploy",
-                "build/libs/navigator-1.0-SNAPSHOT.war",
-                "--port",
-                "8080",
-                // "--sslCert",
-                // "soa-lab-keystore"
-            )
-        }
-    }
 }
