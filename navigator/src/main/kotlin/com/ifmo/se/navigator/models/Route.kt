@@ -7,7 +7,7 @@ sealed class RouteBase {
     abstract val coordinate: Coordinate?
     abstract val locationFrom: Location?
     abstract val locationTo: Location?
-    abstract val distance: Double
+    abstract val distance: Double?
 }
 
 data class Route(

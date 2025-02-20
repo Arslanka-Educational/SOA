@@ -18,6 +18,7 @@ class LocationServiceImpl(
     private companion object : KLogging()
 
     override fun getLocationById(locationId: Long): LocationDto {
+        println("locations" + locationRepository.findAll())
         val location = locationRepository.findById(locationId).orElseThrow {
             EntityNotFoundException("Location with ID $locationId not found")
         }

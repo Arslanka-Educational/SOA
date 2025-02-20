@@ -1,14 +1,20 @@
 package org.example.com.ifmo.se.route.management.controllers
 
 import generated.com.ifmo.se.route.api.RoutesApi
-import generated.com.ifmo.se.route.dto.*
+import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
+import generated.com.ifmo.se.route.dto.RouteDto
+import generated.com.ifmo.se.route.dto.RouteResponseDto
+import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
+import generated.com.ifmo.se.route.dto.SortFieldsDto
 import lombok.RequiredArgsConstructor
 import org.example.com.ifmo.se.route.management.services.RouteService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RestController
 import java.math.BigDecimal
 
 @RequiredArgsConstructor
-class RoutesController(
+@RestController
+open class RoutesController(
     private val routeService: RouteService,
 ) : RoutesApi {
     override fun deleteRouteByDistance(distance: Double): ResponseEntity<RouteDto> {

@@ -16,7 +16,7 @@ data class Route(
     @Column(nullable = false)
     var distance: Double,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     var from: Location? = null,
 
     @ManyToOne

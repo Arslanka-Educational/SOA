@@ -2,7 +2,9 @@ client:
   route-management:
     server:
       name: route-management
-      url: https://localhost:8080/route-management
-    tls:
-      group: ''
-      trustAny: true
+      url: http://localhost:8082
+      connect-timeout: 5000
+      read-timeout: 10000
+#    tls:
+#      group: ''
+#      trustAny: true

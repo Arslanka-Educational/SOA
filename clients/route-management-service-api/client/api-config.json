@@ -6,5 +6,7 @@
   "removeOperationIdPrefix": true,
   "useTags": true,
   "interfaceOnly": true,
-  "skipDefaultInterfaces": true
+  "skipDefaultInterfaces": true,
+  "serializationLibrary": "jackson",
+  "authMethods": "none"
 }

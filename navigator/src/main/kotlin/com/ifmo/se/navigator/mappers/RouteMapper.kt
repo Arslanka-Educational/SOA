@@ -3,8 +3,8 @@ package com.ifmo.se.navigator.mappers
 import com.ifmo.se.navigator.models.EnrichedRoute
 import com.ifmo.se.navigator.models.Route
 import generated.com.ifmo.se.route.dto.RouteDto
-import generated.com.ifmo.se.navigator.dto.RouteDto as NavigatorRouteDto
 import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
+import generated.com.ifmo.se.navigator.dto.RouteDto as NavigatorRouteDto
 
 internal fun Route.toRouteUpsertRequestDto() = RouteUpsertRequestDto(
     name = name,

@@ -8,8 +8,8 @@ plugins {
 }
 
 group = "com.ifmo.se.navigator"
-version = "1.0-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_21
+version = "1"
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -19,12 +19,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
     }
+    implementation("org.openapitools:openapi-generator:7.0.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.ktor:ktor-client-core:2.0.0")
-    implementation("io.ktor:ktor-client-cio:2.0.0")
-    implementation("io.ktor:ktor-client-content-negotiation:2.0.0")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0")
+    implementation("io.ktor:ktor-client-core:2.3.3")
+    implementation("io.ktor:ktor-client-cio:2.3.3")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
     implementation("io.kotlintest:kotlintest:2.0.7")
     implementation("io.kotlintest:kotlintest-runner-junit5:3.1.9")
     implementation("com.squareup.moshi:moshi:1.14.0")
@@ -38,7 +39,7 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-}
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")}
 
 configurations {
     all {
@@ -51,13 +52,13 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
 }
 
@@ -67,59 +68,111 @@ tasks.withType<Test> {
 
 val serverName = "navigator-service-api"
 val serverOpenApiSpec = "../clients/$serverName/navigator-service-api.yaml"
+val routeManagementClientModels = "route-management-service-api"
+val routeManagementClientModelsSpec = "../clients/$routeManagementClientModels/client-models.yaml"
 
 tasks.register("generateServer") {
     doLast {
-        exec {
-            commandLine(
-                "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
-                "-g",
-                "kotlin-spring",
-                "-o",
-                "build/generated-server/$serverName",
-                "--additional-properties=interfaceOnly=true",
-                "--config",
-                "../clients/$serverName/server/api-config.json",
-                "--skip-validate-spec",
-                "--global-property=apis,models,useTags"
-            )
+        val specs = mapOf(
+            serverName to serverOpenApiSpec,
+            routeManagementClientModels to routeManagementClientModelsSpec
+        )
+
+        specs.forEach { (serverName, specPath) ->
+            javaexec {
+                mainClass.set("-jar")
+                args = listOf(
+                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
+                    "-g", "kotlin-spring",
+                    "-o", "build/generated-server/$serverName",
+                    "--additional-properties=interfaceOnly=true",
+                    "--config", "../clients/$serverName/server/api-config.json",
+                    "--skip-validate-spec",
+                    "--global-property=apis,models,useTags"
+                )
+            }
         }
+//        javaexec {
+//            mainClass.set("-jar")
+//            args = listOf(
+//                "../openapi-generator-cli.jar", "generate", "-i", serverOpenApiSpec,
+//                "-g", "kotlin-spring",
+//                "-o", "build/generated-server/$serverName",
+//                "--additional-properties=interfaceOnly=true",
+//                "--config", "../clients/$serverName/server/api-config.json",
+//                "--skip-validate-spec",
+//                "--global-property=apis,models,useTags"
+//            )
+//        }
+//        exec {
+//            commandLine(
+//                "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
+//                "-g",
+//                "kotlin-spring",
+//                "-o",
+//                "build/generated-server/$serverName",
+//                "--additional-properties=interfaceOnly=true",
+//                "--config",
+//                "../clients/$serverName/server/api-config.json",
+//                "--skip-validate-spec",
+//                "--global-property=apis,models,useTags"
+//            )
+//        }
     }
 }
 
-val openApiSpecsDir = projectDir.resolve("../clients")
-val generatedCodeDir = projectDir.resolve("build/generated-clients")
+//val openApiSpecsDir = projectDir.resolve("../clients")
+//val generatedCodeDir = projectDir.resolve("build/generated-clients")
+//
+//tasks.register("generateClients") {
+//    doLast {
+//        openApiSpecsDir.walkTopDown().filter { file ->
+//            file.isFile && (file.extension == "yaml") && File("../clients/${file.parentFile.nameWithoutExtension}/client/api-config.json").exists()
+//        }
+//            .forEach { specFile ->
+//                val clientName = specFile.nameWithoutExtension
+//                val outputDir = generatedCodeDir.resolve(clientName)
+//
+//                println("Generating client for $clientName from ${specFile.name}")
+//                javaexec {
+//                    mainClass.set("-jar")
+//                    args = listOf(
+//                        "../openapi-generator-cli.jar", "generate", "-i", specFile.absolutePath,
+//                        "-g", "kotlin",
+//                        "-o", outputDir.absolutePath,
+//                        "--config", "../clients/${specFile.parentFile.nameWithoutExtension}/client/api-config.json",
+//                        "--skip-validate-spec",
+//                        "--global-property=apis,models,supportingFiles,useTags"
+//                    )
+//                }
+////                exec {
+////                    commandLine(
+////                        "openapi-generator-cli", "generate",
+////                        "-i", specFile.absolutePath,
+////                        "-g", "kotlin",
+////                        "-o", outputDir.absolutePath,
+////                        "--config", "../clients/${specFile.parentFile.nameWithoutExtension}/client/api-config.json",
+////                        "--skip-validate-spec",
+////                        "--global-property=apis,models,useTags"
+////                    )
+////                }
+//            }
+//    }
+//}
 
-tasks.register("generateClients") {
-    doLast {
-        openApiSpecsDir.walkTopDown().filter { file ->
-            file.isFile && (file.extension == "yaml") && File("../clients/${file.parentFile.nameWithoutExtension}/client/api-config.json").exists()
+kotlin {
+    sourceSets {
+        all {
+//            languageSettings.optIn("io.ktor.util.InternalAPI")
         }
-            .forEach { specFile ->
-                val clientName = specFile.nameWithoutExtension
-                val outputDir = generatedCodeDir.resolve(clientName)
-
-                println("Generating client for $clientName from ${specFile.name}")
-
-                exec {
-                    commandLine(
-                        "openapi-generator-cli", "generate",
-                        "-i", specFile.absolutePath,
-                        "-g", "kotlin",
-                        "-o", outputDir.absolutePath,
-                        "--config", "../clients/${specFile.parentFile.nameWithoutExtension}/client/api-config.json",
-                        "--skip-validate-spec",
-                        "--global-property=apis,models,useTags"
-                    )
-                }
-            }
+        // ...
     }
 }
 
 sourceSets {
     main {
         kotlin {
-            srcDir("build/generated-clients")
+//            srcDir("build/generated-clients")
             srcDir("build/generated-server")
         }
     }
@@ -127,10 +180,10 @@ sourceSets {
 
 tasks.named("compileKotlin") {
     dependsOn("generateServer")
-    dependsOn("generateClients")
+//    dependsOn("generateClients")
 }
 
 tasks.named("compileJava") {
     dependsOn("generateServer")
-    dependsOn("generateClients")
+//    dependsOn("generateClients")
 }

@@ -73,11 +73,11 @@ class RouteServiceImpl(
         existingRoute.distance = routeDto.distance
 
         existingRoute.from = routeDto.from?.let {
-            Location(x = it.x, y = it.y, z = it.z, name = it.name)
+            Location(id = existingRoute.from!!.id, x = it.x, y = it.y, z = it.z, name = it.name)
         } ?: existingRoute.from
 
         existingRoute.to = routeDto.to?.let {
-            Location(x = it.x, y = it.y, z = it.z, name = it.name)
+            Location(id = existingRoute.to!!.id, x = it.x, y = it.y, z = it.z, name = it.name)
         } ?: existingRoute.to
 
         val updatedRoute = routeRepository.save(existingRoute)

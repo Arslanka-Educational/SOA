@@ -2,7 +2,7 @@ client:
   route-management-api:
     server:
       name: route-management
-      url: https://89.169.147.9:8080/route-management
-    tls:
-      group: ''
-      trustAny: true
+      url: https://89.169.147.9:8081/route-management
+#    tls:
+#      group: ''
+#      trustAny: true
