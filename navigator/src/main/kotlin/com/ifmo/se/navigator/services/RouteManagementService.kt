@@ -10,7 +10,6 @@ import generated.com.ifmo.se.route.dto.SortFieldsDto
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.OffsetDateTime
 
 @Service
 class RouteManagementService(
@@ -20,20 +19,11 @@ class RouteManagementService(
     private companion object : KLogging()
 
     internal suspend fun addRoute(route: Route): EnrichedRoute =
-        EnrichedRoute(
-            id=1,
-            name="name",
-            coordinate = null,
-            locationFrom = null,
-            locationTo = null,
-            distance = 10.0,
-            creationDate = OffsetDateTime.now()
-        )
-//        routeManagementClient.postRoute(
-//            request = route.toRouteUpsertRequestDto()
-//        ).body!!.toDomain().also {
-//            logger.info { "Added route=$it" }
-//        }
+        routeManagementClient.postRoute(
+            request = route.toRouteUpsertRequestDto()
+        ).body!!.toDomain().also {
+            logger.info { "Added route=$it" }
+        }
 
     internal suspend fun getRouteFirstMatched(
         limit: Int?,
