@@ -1,12 +1,16 @@
 package com.ifmo.se.navigator.com.ifmo.se.navigator.configs
 
+import com.ifmo.se.navigator.com.ifmo.se.navigator.clients.CustomErrorDecoder
 import com.ifmo.se.navigator.com.ifmo.se.navigator.clients.RouteManagementClient
+import feign.Contract
 import feign.Feign
 import feign.Request
+import feign.codec.ErrorDecoder
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.util.concurrent.TimeUnit
+
 
 @Configuration
 open class FeignClientConfig {
@@ -30,5 +34,15 @@ open class FeignClientConfig {
         return Feign.builder()
             .options(feignRequestOptions())
             .target(RouteManagementClient::class.java, url)
+    }
+
+    @Bean
+    open fun feignContract(): Contract {
+        return Contract.Default()
+    }
+
+    @Bean
+    open fun errorDecoder(): ErrorDecoder {
+        return CustomErrorDecoder()
     }
 }

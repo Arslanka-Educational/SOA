@@ -500,6 +500,9 @@ components:
           type: string
           nullable: true
           maxLength: 517
+        id: 
+          type: integer
+          format: int32
       required:
         - x
         - z

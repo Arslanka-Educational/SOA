@@ -16,17 +16,19 @@ data class Route(
     @Column(nullable = false)
     var distance: Double,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
+    @JoinColumn(name = "location_id_from")
     var from: Location? = null,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.MERGE])
+    @JoinColumn(name = "location_id_to")
     var to: Location? = null
 ) : BaseEntity()
 
 @Embeddable
 data class Coordinates(
-    val x: Int,
+    var x: Int,
 
     @field:DecimalMax("610")
-    val y: Double
+    var y: Double
 )

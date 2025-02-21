@@ -1,36 +1,31 @@
 package com.ifmo.se.navigator.com.ifmo.se.navigator.clients
 
-import com.ifmo.se.navigator.models.EnrichedRoute
-import generated.com.ifmo.se.route.dto.RouteDto
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.RouteResponseDto
-import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
-import generated.com.ifmo.se.route.dto.SortFieldsDto
+import feign.Param
+import feign.RequestLine
+import generated.com.ifmo.se.route.dto.*
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+
 
 @FeignClient(name = "routeManagementClient", url = "\${client.route-management.server.url}")
 interface RouteManagementClient {
-    @PostMapping("/route")
+
+    @RequestLine("POST /routes")
     fun postRoute(
-        @RequestBody request: RouteUpsertRequestDto,
+        request: RouteUpsertRequestDto,
     ): ResponseEntity<RouteDto>
 
-    @GetMapping("/locations/{id}")
+    @RequestLine("GET /locations/{id}")
     fun getLocationById(
-        @PathVariable id: Long,
+        @Param("id") id: Long,
     ): ResponseEntity<LocationDto>
 
+    @RequestLine("GET /routes?filter={filter}&sortBy={sortBy}&limit={limit}&offset={offset}")
     fun getRoutes(
-        filter: GetRoutesFilterParameterDto?,
-        sortBy: List<SortFieldsDto>?,
-        limit: Int?,
-        offset: Int?
+        @Param("filter") filter: GetRoutesFilterParameterDto?,
+        @Param("sortBy") sortBy: List<SortFieldsDto>?,
+        @Param("limit") limit: Int?,
+        @Param("offset") offset: Int?
     ): ResponseEntity<RouteResponseDto>
 
 }

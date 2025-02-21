@@ -9,6 +9,7 @@ internal fun Location.toRouteLocationDto() = LocationDto(
     y = y,
     z = z,
     name = name,
+    id = id,
 )
 
 internal fun Location.toNavigatorLocationDto() = NavigatorLocationDto(
@@ -23,4 +24,5 @@ internal fun LocationDto.toDomain() = Location(
     y = this.y,
     z = this.z,
     name = this.name,
+    id = this.id,
 )

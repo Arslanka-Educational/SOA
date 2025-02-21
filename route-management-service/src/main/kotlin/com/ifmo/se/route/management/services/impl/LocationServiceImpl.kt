@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service
 @RequiredArgsConstructor
-class LocationServiceImpl(
+open class LocationServiceImpl(
     private val locationRepository: LocationRepository,
     private val locationMapper: LocationMapper,
 ) : LocationService {

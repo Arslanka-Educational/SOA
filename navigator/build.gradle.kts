@@ -39,7 +39,9 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")}
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
+    implementation("io.github.openfeign:feign-core:12.4")
+}
 
 configurations {
     all {
