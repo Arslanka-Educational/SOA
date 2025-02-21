@@ -11,13 +11,14 @@ import org.springframework.stereotype.Service
 
 @Service
 @RequiredArgsConstructor
-class LocationServiceImpl(
+open class LocationServiceImpl(
     private val locationRepository: LocationRepository,
     private val locationMapper: LocationMapper,
 ) : LocationService {
     private companion object : KLogging()
 
     override fun getLocationById(locationId: Long): LocationDto {
+        println("locations" + locationRepository.findAll())
         val location = locationRepository.findById(locationId).orElseThrow {
             EntityNotFoundException("Location with ID $locationId not found")
         }

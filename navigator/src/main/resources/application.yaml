@@ -5,14 +5,6 @@ spring:
     banner-mode: "off"
   profiles:
     active: local
-client:
-  route-management:
-    server:
-      name: route-management
-      url: https://localhost:8081/route-management
-    tls:
-      group: ''
-      trustAny: true
 server:
   port: 8080
 

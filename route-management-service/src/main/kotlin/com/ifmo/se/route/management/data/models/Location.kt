@@ -1,11 +1,14 @@
 package org.example.com.ifmo.se.route.management.data.models
 
 import jakarta.persistence.Entity
+import jakarta.persistence.Id
 
 @Entity
 class Location(
-    val x: Int,
-    val z: Long,
-    val y: Int? = null,
-    val name: String? = null,
-) : BaseEntity()
+    @Id
+    val id: Long,
+    var x: Int,
+    var z: Long,
+    var y: Int? = null,
+    var name: String? = null,
+)

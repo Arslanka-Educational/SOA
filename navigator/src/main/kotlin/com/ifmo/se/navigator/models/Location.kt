@@ -5,6 +5,7 @@ data class Location(
     val y: Int?,
     val z: Long,
     val name: String?,
+    val id: Int?
 )
 
 @JvmInline

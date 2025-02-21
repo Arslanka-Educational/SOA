@@ -6,7 +6,6 @@ import generated.com.ifmo.se.route.dto.SortFieldsDto
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.springframework.stereotype.Service
-import java.time.OffsetDateTime
 
 @Service
 class NavigatorService(
