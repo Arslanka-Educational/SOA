@@ -314,25 +314,7 @@ components:
         - coordinates
         - creationDate
         - distance
-        
-#     RouteUpsertRequest:
-#       type: object
-#       properties:
-#         name:
-#           type: string
-#           minLength: 1
-#         coordinates:
-#           $ref: '#/components/schemas/Coordinates'
-#         from:
-#           $ref: '#/components/schemas/Location'
-#         to:
-#           $ref: '#/components/schemas/Location'
-#         distance:
-#           $ref: '#/components/schemas/Distance'
-#       required:
-#         - name
-#         - coordinates
-#         - distance
+
 
     Coordinates:
       type: object

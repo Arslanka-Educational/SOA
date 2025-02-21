@@ -41,6 +41,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
     implementation("io.github.openfeign:feign-core:12.4")
+    implementation("io.github.openfeign:feign-httpclient:11.10") // Apache HTTP Client
 }
 
 configurations {
@@ -81,23 +82,11 @@ tasks.register("generateServer") {
         )
 
         specs.forEach { (serverName, specPath) ->
-            exec {
-                commandLine(
-                    "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
-                    "-g",
-                    "kotlin-spring",
-                    "-o", "build/generated-server/$serverName",
-                    "--additional-properties=interfaceOnly=true",
-                    "--config", "../clients/$serverName/server/api-config.json",
-                    "--skip-validate-spec",
-                    "--global-property=apis,models,useTags"
-                )
-            }
-//            javaexec {
-//                mainClass.set("-jar")
-//                args = listOf(
-//                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
-//                    "-g", "kotlin-spring",
+//            exec {
+//                commandLine(
+//                    "openapi-generator-cli", "generate", "-i", specPath,
+//                    "-g",
+//                    "kotlin-spring",
 //                    "-o", "build/generated-server/$serverName",
 //                    "--additional-properties=interfaceOnly=true",
 //                    "--config", "../clients/$serverName/server/api-config.json",
@@ -105,6 +94,18 @@ tasks.register("generateServer") {
 //                    "--global-property=apis,models,useTags"
 //                )
 //            }
+            javaexec {
+                mainClass.set("-jar")
+                args = listOf(
+                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
+                    "-g", "kotlin-spring",
+                    "-o", "build/generated-server/$serverName",
+                    "--additional-properties=interfaceOnly=true",
+                    "--config", "../clients/$serverName/server/api-config.json",
+                    "--skip-validate-spec",
+                    "--global-property=apis,models,useTags"
+                )
+            }
         }
     }
 }

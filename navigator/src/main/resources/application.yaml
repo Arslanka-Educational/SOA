@@ -6,8 +6,15 @@ spring:
   profiles:
     active: local
 server:
-  port: 8080
-
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:soa.keystore # Хранилище ключей
+    key-store-password: password # Пароль от хранилища ключей
+    key-alias: soa # Псевдоним сертификата
+    key-password: password # Пароль от ключа
+    trust-store: classpath:soa.truststore # Хранилище доверенных сертификатов
+    trust-store-password: password # Пароль от truststore
 logging:
   level:
     root: INFO

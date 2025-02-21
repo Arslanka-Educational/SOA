@@ -1,5 +1,6 @@
 package com.ifmo.se.navigator.com.ifmo.se.navigator.clients
 
+import com.ifmo.se.navigator.com.ifmo.se.navigator.configs.FeignClientConfig
 import feign.Param
 import feign.RequestLine
 import generated.com.ifmo.se.route.dto.*
@@ -7,7 +8,11 @@ import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.ResponseEntity
 
 
-@FeignClient(name = "routeManagementClient", url = "\${client.route-management.server.url}")
+@FeignClient(
+    name = "routeManagementClient",
+    url = "\${client.route-management.server.url}",
+    configuration = [FeignClientConfig::class]
+)
 interface RouteManagementClient {
 
     @RequestLine("POST /routes")

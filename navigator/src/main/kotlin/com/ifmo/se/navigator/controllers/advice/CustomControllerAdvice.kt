@@ -1,4 +1,4 @@
-package com.ifmo.se.navigator.com.ifmo.se.navigator.controllers
+package com.ifmo.se.navigator.com.ifmo.se.navigator.controllers.advice
 
 import com.ifmo.se.navigator.com.ifmo.se.navigator.exceptions.EntityNotFoundException
 import generated.com.ifmo.se.navigator.dto.ErrorDto

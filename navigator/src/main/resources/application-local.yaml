@@ -2,7 +2,7 @@ client:
   route-management:
     server:
       name: route-management
-      url: http://localhost:8082
+      url: https://localhost:8444
       connect-timeout: 5000
       read-timeout: 10000
 #    tls:
