@@ -39,8 +39,8 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.1.1")
-    implementation("io.github.openfeign:feign-core:12.4")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
+
 }
 
 configurations {
@@ -81,23 +81,11 @@ tasks.register("generateServer") {
         )
 
         specs.forEach { (serverName, specPath) ->
-            exec {
-                commandLine(
-                    "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
-                    "-g",
-                    "kotlin-spring",
-                    "-o", "build/generated-server/$serverName",
-                    "--additional-properties=interfaceOnly=true",
-                    "--config", "../clients/$serverName/server/api-config.json",
-                    "--skip-validate-spec",
-                    "--global-property=apis,models,useTags"
-                )
-            }
-//            javaexec {
-//                mainClass.set("-jar")
-//                args = listOf(
-//                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
-//                    "-g", "kotlin-spring",
+//            exec {
+//                commandLine(
+//                    "openapi-generator-cli", "generate", "-i", specPath,
+//                    "-g",
+//                    "kotlin-spring",
 //                    "-o", "build/generated-server/$serverName",
 //                    "--additional-properties=interfaceOnly=true",
 //                    "--config", "../clients/$serverName/server/api-config.json",
@@ -105,6 +93,18 @@ tasks.register("generateServer") {
 //                    "--global-property=apis,models,useTags"
 //                )
 //            }
+            javaexec {
+                mainClass.set("-jar")
+                args = listOf(
+                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
+                    "-g", "kotlin-spring",
+                    "-o", "build/generated-server/$serverName",
+                    "--additional-properties=interfaceOnly=true",
+                    "--config", "../clients/$serverName/server/api-config.json",
+                    "--skip-validate-spec",
+                    "--global-property=apis,models,useTags"
+                )
+            }
         }
     }
 }
