@@ -17,7 +17,7 @@ class LocationManagementService(
 ) {
     private companion object : KLogging()
 
-    internal suspend fun getLocationById(locationId: LocationId): Location? =
+    internal fun getLocationById(locationId: LocationId): Location? =
             routeManagementClient.getLocationById(id = locationId.id).body?.toDomain().also {
                 logger.info { "get by id=$locationId location=$it" }
             }

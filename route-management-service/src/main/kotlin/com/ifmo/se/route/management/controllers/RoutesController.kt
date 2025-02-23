@@ -18,7 +18,7 @@ open class RoutesController(
     private val routeService: RouteService,
 ) : RoutesApi {
     override fun deleteRouteByDistance(distance: Double): ResponseEntity<RouteDto> {
-        return super.deleteRouteByDistance(distance)
+        return ResponseEntity.ok(routeService.deleteRouteByDistance(distance = distance))
     }
 
     override fun deleteRouteById(id: Int, distance: BigDecimal?): ResponseEntity<RouteDto> {
@@ -33,9 +33,9 @@ open class RoutesController(
         limit: Int?,
         offset: Int?,
         sortBy: List<SortFieldsDto>?,
-        filter: GetRoutesFilterParameterDto?
+        getRoutesFilterParameter: GetRoutesFilterParameterDto?
     ): ResponseEntity<RouteResponseDto> {
-        return ResponseEntity.ok(routeService.getPaginatedFilteredRoutes(filter, offset, limit, sortBy))
+        return ResponseEntity.ok(routeService.getPaginatedFilteredRoutes(getRoutesFilterParameter, offset, limit, sortBy))
     }
 
     override fun getRoutesCounts(maxDistance: Double?): ResponseEntity<Int> {

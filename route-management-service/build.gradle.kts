@@ -35,7 +35,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -87,20 +86,6 @@ val serverOpenApiSpec = "../clients/$serverName/route-management-service.yaml"
 
 tasks.register("generateServer") {
     doLast {
-//        javaexec {
-//            mainClass.set("-jar")
-//            args = listOf(
-//                "../openapi-generator-cli.jar", "generate", "-i", serverOpenApiSpec,
-//                "-g", "kotlin-spring",
-//                "-o", "build/generated-server/$serverName",
-//                "--additional-properties=interfaceOnly=true",
-//                "--config", "../clients/$serverName/server/api-config.json",
-//                "--skip-validate-spec",
-//                "--global-property=apis,models,supportingFiles,useTags"
-//            )
-//        }
-
-
         exec {
             commandLine(
                 "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,

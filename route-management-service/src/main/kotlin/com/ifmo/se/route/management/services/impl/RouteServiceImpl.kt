@@ -130,6 +130,16 @@ open class RouteServiceImpl(
         return routeMapper.map(route)
     }
 
+    @Transactional
+    override fun deleteRouteByDistance(distance: Double): RouteDto {
+        val route = routeRepository.findOneByDistance(distance = distance)
+            ?: throw EntityNotFoundException("Route with distance $distance not found")
+
+        routeRepository.delete(route)
+
+        return routeMapper.map(route)
+    }
+
     override fun getRoutesCountByDistance(maxDistance: Double?): Int {
         return routeRepository.countRoutesWithDistanceLessThan(maxDistance).toInt()
     }

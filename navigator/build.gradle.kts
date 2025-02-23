@@ -22,14 +22,6 @@ dependencies {
     implementation("org.openapitools:openapi-generator:7.0.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.ktor:ktor-client-core:2.3.3")
-    implementation("io.ktor:ktor-client-cio:2.3.3")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
-    implementation("io.kotlintest:kotlintest:2.0.7")
-    implementation("io.kotlintest:kotlintest-runner-junit5:3.1.9")
-    implementation("com.squareup.moshi:moshi:1.14.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.8")
     implementation("io.swagger.core.v3:swagger-models:2.2.8")
     implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
@@ -40,7 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
-
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 }
 
 configurations {
@@ -81,23 +73,11 @@ tasks.register("generateServer") {
         )
 
         specs.forEach { (serverName, specPath) ->
-//            exec {
-//                commandLine(
-//                    "openapi-generator-cli", "generate", "-i", specPath,
-//                    "-g",
-//                    "kotlin-spring",
-//                    "-o", "build/generated-server/$serverName",
-//                    "--additional-properties=interfaceOnly=true",
-//                    "--config", "../clients/$serverName/server/api-config.json",
-//                    "--skip-validate-spec",
-//                    "--global-property=apis,models,useTags"
-//                )
-//            }
-            javaexec {
-                mainClass.set("-jar")
-                args = listOf(
-                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
-                    "-g", "kotlin-spring",
+            exec {
+                commandLine(
+                    "openapi-generator-cli", "generate", "-i", specPath,
+                    "-g",
+                    "kotlin-spring",
                     "-o", "build/generated-server/$serverName",
                     "--additional-properties=interfaceOnly=true",
                     "--config", "../clients/$serverName/server/api-config.json",

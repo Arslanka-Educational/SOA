@@ -194,7 +194,7 @@ paths:
   
   /routes/distances/{distance}:
     delete:
-      summary: Удалить либой маршрут с дистанцией равной заданной
+      summary: Удалить любой маршрут с дистанцией равной заданной
       tags:
         - Routes
       operationId: deleteRouteByDistance
@@ -202,7 +202,7 @@ paths:
         - name: distance
           in: path
           required: true
-          description: Удалить маршрут с указанным значением distance
+          description: Удалить любой маршрут с указанным значением distance
           schema:
             type: number
             format: double
