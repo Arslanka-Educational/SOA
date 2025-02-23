@@ -20,5 +20,7 @@ interface RouteService {
 
     fun deleteRouteById(routeId: Int): RouteDto
 
+    fun deleteRouteByDistance(distance: Double): RouteDto
+
     fun getRoutesCountByDistance(maxDistance: Double?): Int
 }
