@@ -1,5 +1,6 @@
 package com.ifmo.se.navigator.com.ifmo.se.navigator.clients
 
+import generated.com.ifmo.se.navigator.dto.LocationResponseDto
 import generated.com.ifmo.se.route.dto.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.*
@@ -40,6 +41,21 @@ open class RouteManagementClient(private val restTemplate: RestTemplate) {
         return restTemplate.getForEntity(
             "$baseUrl/routes?filter={filter}&sortBy={sortBy}&limit={limit}&offset={offset}",
             RouteResponseDto::class.java,
+            params
+        )
+    }
+
+    fun getLocations(
+        limit: Int?,
+        offset: Int?,
+    ): ResponseEntity<LocationResponseDto> {
+        val params = mutableMapOf<String, Any>()
+        limit?.let { params["limit"] = it }
+        offset?.let { params["offset"] = it }
+
+        return restTemplate.getForEntity(
+            "$baseUrl/locations?limit={limit}&offset={offset}",
+            LocationResponseDto::class.java,
             params
         )
     }

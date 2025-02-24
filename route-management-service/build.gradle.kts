@@ -94,8 +94,7 @@ tasks.register("generateServer") {
                 "-o",
                 "build/generated-server/$serverName",
                 "--additional-properties=interfaceOnly=true",
-                "--config",
-                "../clients/$serverName/server/api-config.json",
+                "--config", "../clients/$serverName/server/api-config.json",
                 "--skip-validate-spec",
                 "--global-property=apis,models,supportingFiles,useTags"
             )
