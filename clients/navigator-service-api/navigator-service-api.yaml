@@ -11,6 +11,45 @@ servers:
     x-environment: prod
     
 paths:
+  /navigator/locations:
+    get:
+      summary: Получить список локаций
+      tags:
+        - Locations
+      operationId: getLocations
+      parameters:
+        - name: limit
+          in: query
+          description: Количество элементов в выдаче
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
+        - name: offset
+          in: query
+          description: Сдвиг по элементам от начала
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
+      responses:
+        '200':
+          description: Локация
+          content:
+            application/json:
+              schema:
+                $ref: '../route-management-service-api/client-models.yaml#/components/schemas/LocationResponse'
+        '400':
+          $ref: '../../common/responses.yaml#/components/responses/400'
+        '404':
+          $ref: '../../common/responses.yaml#/components/responses/404'
+        '500':
+          $ref: '../../common/responses.yaml#/components/responses/500'
+        '503':
+          $ref: '../../common/responses.yaml#/components/responses/503'
+
   /navigator/route/{id-from}/{id-to}/{shortest}:
       get:
         summary: Найти самый короткий (или длинный) маршрут между указанными локациями
