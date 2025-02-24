@@ -29,6 +29,17 @@ components:
         $ref: '#/components/schemas/GetRoutesFilterParameter'
 
   schemas:
+    LocationResponse:
+      type: object
+      properties:
+        locations:
+          type: array
+          items:
+            $ref: './route-management-service.yaml#/components/schemas/Location'
+        total:
+          type: integer
+          description: Общее количество элементов
+
     RouteResponse:
       type: object
       properties:
