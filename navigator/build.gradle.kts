@@ -28,6 +28,7 @@ dependencies {
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("javax.servlet:javax.servlet-api:4.0.1")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
