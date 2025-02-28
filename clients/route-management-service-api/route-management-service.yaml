@@ -81,22 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                title: RouteResponse
-                type: object
-                properties:
-                  routes:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Route'
-                  total:
-                    type: integer
-                    description: Общее количество элементов
-                  limit:
-                    type: integer
-                    description: Количество элементов
-                  offset:
-                    type: integer
-                    description: Сдвиг по элементам
+                $ref: './client-models.yaml#/components/schemas/RouteResponse'
         '204':
           $ref: '../../common/responses.yaml#/components/responses/204'
         '400':
@@ -321,6 +306,7 @@ components:
   schemas:
     Route:
       type: object
+      title: Route
       properties:
         id:
           type: integer
