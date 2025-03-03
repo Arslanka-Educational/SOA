@@ -1,7 +1,6 @@
 package org.example.com.ifmo.se.route.management.services
 
 import generated.com.ifmo.se.route.dto.*
-import org.springframework.data.domain.Sort
 
 interface RouteService {
     fun getPaginatedFilteredRoutes(
@@ -9,7 +8,6 @@ interface RouteService {
         offset: Int?,
         limit: Int?,
         sortBy: List<SortFieldsDto>?,
-        sortDirection: Sort.Direction = Sort.Direction.ASC
     ): RouteResponseDto
 
     fun save(routeDto: RouteUpsertRequestDto): RouteDto

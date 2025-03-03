@@ -16,8 +16,6 @@ class RouteSpecification(private val filter: GetRoutesFilterParameterDto) : Spec
         val predicates = mutableListOf<Predicate>()
         filter.locationIdFrom?.let {predicates.add(criteriaBuilder.equal(root.get<Location>("from_id").get<Long>("id"), it))}
         filter.locationIdTo?.let {predicates.add(criteriaBuilder.equal(root.get<Location>("to_id").get<Long>("id"), it))}
-
-
         filter.minId?.let { predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get<Int>("id"), it)) }
         filter.maxId?.let { predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get<Int>("id"), it)) }
         filter.name?.let { predicates.add(criteriaBuilder.equal(root.get<String>("name"), it)) }
