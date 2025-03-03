@@ -29,6 +29,48 @@ components:
         $ref: '#/components/schemas/GetRoutesFilterParameter'
 
   schemas:
+    RouteAddRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          $ref: './route-management-service.yaml#/components/schemas/Coordinates'
+      required:
+        - name
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор маршрута1
+          readOnly: true
+          minimum: 1
+          format: int64
+          nullable: false
+        name:
+          type: string
+          description: Название маршрута
+          minLength: 1
+          nullable: false
+        coordinates:
+          $ref: './route-management-service.yaml#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: false
+        from:
+          $ref: './route-management-service.yaml#/components/schemas/Location'
+        to:
+          $ref: './route-management-service.yaml#/components/schemas/Location'
+        distance:
+          $ref: './route-management-service.yaml#/components/schemas/Distance'
+      required:
+        - id
+        - name
+        - coordinates
+        - creationDate
     LocationResponse:
       type: object
       properties:
@@ -46,7 +88,7 @@ components:
         routes:
           type: array
           items:
-            $ref: './route-management-service.yaml#/components/schemas/Route'
+            $ref: '#/components/schemas/Route'
         total:
           type: integer
           description: Общее количество элементов

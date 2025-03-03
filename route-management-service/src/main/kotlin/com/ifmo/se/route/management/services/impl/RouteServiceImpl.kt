@@ -1,7 +1,6 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
 import generated.com.ifmo.se.route.dto.*
-import io.ktor.util.*
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
@@ -12,14 +11,10 @@ import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.models.Route
 import org.example.com.ifmo.se.route.management.data.repositories.LocationRepository
 import org.example.com.ifmo.se.route.management.data.repositories.RouteRepository
-import org.example.com.ifmo.se.route.management.data.repositories.specifications.RouteSpecification
 import org.example.com.ifmo.se.route.management.services.RouteService
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
-import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+
 
 @Service
 @RequiredArgsConstructor
@@ -31,27 +26,20 @@ open class RouteServiceImpl(
 ) : RouteService {
     private companion object : KLogging()
 
+    @Transactional
     override fun getPaginatedFilteredRoutes(
         filter: GetRoutesFilterParameterDto?,
         offset: Int?,
         limit: Int?,
         sortBy: List<SortFieldsDto>?,
-        sortDirection: Sort.Direction
     ): RouteResponseDto {
-        val sort: Sort = if (!sortBy.isNullOrEmpty()) {
-            Sort.by(sortBy.map { Sort.Order(sortDirection, it.value.toLowerCasePreservingASCIIRules()) })
-        } else {
-            Sort.unsorted()
-        } //todo добавить фильтрацию по двум локациям
-
-        val pageable: Pageable = PageRequest.of(offset ?: 0, limit ?: 10, sort)
-        val specification = filter?.let { RouteSpecification(it) } ?: Specification.where(null)
-
-        val page = routeRepository.findAll(specification, pageable)
+        val routes = routeRepository.findRoutesWithFiltersAndSort(filter, offset = offset, limit = limit, sortBy)
+        logger.info { routes.toString() }
+        val total = routes.count()
 
         return RouteResponseDto(
-            routes = page.content.map { routeMapper.map(it) },
-            total = page.totalElements.toInt(),
+            routes = routes.map { routeMapper.map(it) },
+            total = total,
             limit = limit ?: 10,
             offset = offset ?: 0
         )
@@ -82,7 +70,7 @@ open class RouteServiceImpl(
             to = toLocation
         )
 
-        val savedRoute =  entityManager.merge(route)
+        val savedRoute = entityManager.merge(route)
         return routeMapper.map(savedRoute).also { it.creationDate.toOffsetTime() }
     }
 
