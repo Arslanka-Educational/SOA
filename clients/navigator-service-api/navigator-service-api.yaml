@@ -87,7 +87,7 @@ paths:
             content:
               application/json:
                 schema:
-                  $ref: '#/components/schemas/Route'
+                  $ref: '../route-management-service-api/client-models.yaml#/components/schemas/RouteResponse'
           '204':
             $ref: '../../common/responses.yaml#/components/responses/204'
           '400':
@@ -136,14 +136,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RouteAddRequest'
+              $ref: '../route-management-service-api/client-models.yaml#/components/schemas/RouteAddRequest'
       responses:
         '201':
           description: Маршрут успешно создан
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/Route'
+                  $ref: '../route-management-service-api/client-models.yaml#/components/schemas/Route'
         '400':
           $ref: '../../common/responses.yaml#/components/responses/400'
         '404':
@@ -155,94 +155,9 @@ paths:
 
 components:
   schemas:
-    Route:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Уникальный идентификатор маршрута
-          readOnly: true
-          minimum: 1
-          format: int64
-          nullable: false
-        name:
-          type: string
-          description: Название маршрута
-          minLength: 1
-          nullable: false
-        coordinates:
-          $ref: '#/components/schemas/Coordinates'
-        creationDate:
-          type: string
-          format: date-time
-          readOnly: true
-          nullable: false
-        from:
-          $ref: '#/components/schemas/Location'
-        to:
-          $ref: '#/components/schemas/Location'
-        distance:
-          $ref: '#/components/schemas/Distance'
-      required:
-        - id
-        - name
-        - coordinates
-        - creationDate
-
-    Coordinates:
-      type: object
-      nullable: true
-      properties:
-        x:
-          type: integer
-          format: int32
-          nullable: false
-        y:
-          type: number
-          maximum: 610
-          format: double
-          nullable: false
-      required:
-        - x
-        - y
-
-    Location:
-      type: object
-      nullable: true
-      properties:
-        x:
-          type: integer
-          format: int32
-          nullable: false
-        y:
-          type: integer
-          format: int32
-          nullable: true
-        z:
-          type: integer
-          format: int64
-          nullable: false
-        name:
-          type: string
-          nullable: true
-          maxLength: 517
-      required:
-        - x
-        - z
-
     Distance:
       description: Дистанция до маршрута
       type: number
       format: double
       minimum: 1
       nullable: false
-
-    RouteAddRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        coordinates:
-          $ref: '#/components/schemas/Coordinates'
-      required:
-        - name

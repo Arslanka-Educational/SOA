@@ -25,15 +25,15 @@ class RouteManagementService(
             logger.info { "Added route=$it" }
         }
 
-    internal suspend fun getRouteFirstMatched(
+    internal suspend fun getRoutes(
         limit: Int?,
         offset: Int?,
         sortBy: List<SortFieldsDto>?,
         filter: GetRoutesFilterParameterDto?,
-    ): EnrichedRoute? =
+    ): List<EnrichedRoute>? =
         routeManagementClient.getRoutes(filter = filter, sortBy = sortBy, limit = limit, offset = offset)
-            .body?.routes?.firstOrNull()
-            ?.toDomain().also {
+            .body?.routes?.map { it.toDomain() }
+            ?.also {
                 logger.info { "Get route=$it by filter = $filter, sortBy = $sortBy, limit = $limit, offset = $offset" }
             } // TODO(null or 404?)
 }

@@ -24,7 +24,7 @@ data class EnrichedRoute(
     override val coordinate: Coordinate?,
     override val locationFrom: Location?,
     override val locationTo: Location?,
-    override val distance: Double,
+    override val distance: Double?,
     val creationDate: OffsetDateTime,
 ) : RouteBase()
 

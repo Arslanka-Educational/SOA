@@ -33,11 +33,11 @@ class NavigatorService(
             )
         }
 
-    internal suspend fun getRouteBetweenLocations(
+    internal suspend fun getRoutesBetweenLocations(
         idFrom: LocationId,
         idTo: LocationId,
         shortest: Boolean,
-    ): EnrichedRoute? {
+    ): List<EnrichedRoute>? {
         val filterParameters = GetRoutesFilterParameterDto(
             locationIdFrom = idFrom.id,
             locationIdTo = idTo.id,
@@ -49,10 +49,10 @@ class NavigatorService(
             SortFieldsDto.MinusDistance
         }
 
-        return routeManagementService.getRouteFirstMatched(
+        return routeManagementService.getRoutes(
             filter = filterParameters,
             sortBy = listOf(sortField),
-            limit = 1,
+            limit = 10,
             offset = 0,
         )
     }
