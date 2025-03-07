@@ -106,8 +106,11 @@ open class CustomRouteRepositoryImpl : CustomRouteRepository {
         if (filter.toLocationZ != null) {
             queryBuilder.append(" AND r.to.z = :toLocationZ")
         }
-        if (filter.distance != null) {
-            queryBuilder.append(" AND r.distance = :distance")
+        if (filter.distanceFrom != null) {
+            queryBuilder.append(" AND r.distance >= :distanceFrom")
+        }
+        if (filter.distanceTo != null) {
+            queryBuilder.append(" AND r.distance <= :distanceTo")
         }
         if (!filter.nameStartsWithSubstr.isNullOrBlank()) {
             queryBuilder.append(" AND r.name LIKE :nameStartsWithSubstr")
@@ -189,8 +192,11 @@ open class CustomRouteRepositoryImpl : CustomRouteRepository {
         if (filter.toLocationZ != null) {
             query.setParameter("toLocationZ", filter.toLocationZ)
         }
-        if (filter.distance != null) {
-            query.setParameter("distance", filter.distance)
+        if (filter.distanceFrom != null) {
+            query.setParameter("distanceFrom", filter.distanceFrom)
+        }
+        if (filter.distanceTo != null) {
+            query.setParameter("distanceTo", filter.distanceTo)
         }
         if (!filter.nameStartsWithSubstr.isNullOrBlank()) {
             query.setParameter("nameStartsWithSubstr", "${filter.nameStartsWithSubstr}%")

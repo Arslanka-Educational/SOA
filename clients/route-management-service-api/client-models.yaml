@@ -21,7 +21,7 @@ components:
           $ref: '#/components/schemas/SortFields'
         example: name
     Filter:
-      name: GetRoutesFilterParameter
+      name: getRoutesFilterParameter
       in: query
       description: Параметры для сортировки
       required: false
@@ -185,8 +185,12 @@ components:
           description: Координата Z куда
           type: integer
           format: int64
-        distance:
-          description: Дистанция маршрута
+        distanceFrom:
+          description: Дистанция маршрута от
+          type: number
+          format: double
+        distanceTo:
+          description: Дистанция маршрута до
           type: number
           format: double
         nameStartsWithSubstr:

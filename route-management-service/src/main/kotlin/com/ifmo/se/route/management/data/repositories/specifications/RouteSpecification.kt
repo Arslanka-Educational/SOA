@@ -32,7 +32,8 @@ class RouteSpecification(private val filter: GetRoutesFilterParameterDto) : Spec
         filter.toLocationY?.let { predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get<Location>("to").get<Int>("y"), it)) }
         filter.fromLocationZ?.let { predicates.add(criteriaBuilder.equal(root.get<Location>("from").get<Long>("z"), it)) }
         filter.toLocationZ?.let { predicates.add(criteriaBuilder.equal(root.get<Location>("to").get<Long>("z"), it)) }
-        filter.distance?.let { predicates.add(criteriaBuilder.equal(root.get<Double>("distance"), it)) }
+        filter.distanceFrom?.let { predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get<Double>("distance"), it)) }
+        filter.distanceTo?.let { predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get<Double>("distance"), it)) }
 
         return criteriaBuilder.and(*predicates.toTypedArray())
     }
