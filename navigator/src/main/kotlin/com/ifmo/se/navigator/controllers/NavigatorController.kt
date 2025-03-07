@@ -1,6 +1,6 @@
 package com.ifmo.se.navigator.controllers
 
-import com.ifmo.se.navigator.ejb.services.NavigatorService
+import com.ifmo.se.navigator.ejb.services.NavigatorServiceInterface
 import com.ifmo.se.navigator.mappers.toNavigatorRouteDto
 import com.ifmo.se.navigator.mappers.toRoutesResponse
 import com.ifmo.se.navigator.models.Coordinate
@@ -11,11 +11,11 @@ import generated.com.ifmo.se.navigator.dto.RouteDto
 import generated.com.ifmo.se.navigator.dto.RouteResponseDto
 import kotlinx.coroutines.runBlocking
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 open class NavigatorController(
-    private val navigatorService: NavigatorService,
+    private val navigatorService: NavigatorServiceInterface,
 ) : NavigatorApi {
     override fun addRoute(
         idFrom: Long,

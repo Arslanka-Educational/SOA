@@ -6,18 +6,20 @@ import com.ifmo.se.navigator.models.Location
 import com.ifmo.se.navigator.models.LocationId
 import com.ifmo.se.navigator.models.LocationResponse
 import jakarta.ejb.EJB
+import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 
 @Stateless
-class LocationManagementService {
+@Startup
+class LocationManagementService : LocationManagementServiceInterface {
 
     @EJB
     private lateinit var routeManagementClient: RouteManagementClientInterface
 
-    internal fun getLocationById(locationId: LocationId): Location? =
+    override fun getLocationById(locationId: LocationId): Location? =
         toDomain(routeManagementClient.getLocationById(id = locationId.id))
 
-    fun getLocations(limit: Int?, offset: Int?): LocationResponse? =
+    override fun getLocations(limit: Int?, offset: Int?): LocationResponse? =
         routeManagementClient.getLocations(
             limit = limit,
             offset = offset

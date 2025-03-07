@@ -36,6 +36,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation(project(":navigator-models"))
     implementation(project(":navigator-ejb"))
+    implementation("jakarta.ejb:jakarta.ejb-api:4.0.0")  // EJB 4.0
+    implementation("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.0")  // CDI 3.0
+    implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
 }
 
 configurations {

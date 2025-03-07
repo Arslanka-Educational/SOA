@@ -2,6 +2,7 @@ import org.gradle.kotlin.dsl.implementation
 
 plugins {
     kotlin("jvm") version "1.9.23"
+    id("java")
 }
 
 group = "com.ifmo.se.navigator.ejb"
@@ -29,11 +30,20 @@ dependencies {
     implementation(project(":navigator-models"))
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(17)
+}
+
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 val routeManagementClientModels = "route-management-service-api"

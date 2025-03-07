@@ -8,9 +8,11 @@ import com.ifmo.se.navigator.models.Route
 import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
 import generated.com.ifmo.se.route.dto.SortFieldsDto
 import jakarta.ejb.EJB
+import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 
 @Stateless
+@Startup
 class RouteManagementService {
 
     @EJB

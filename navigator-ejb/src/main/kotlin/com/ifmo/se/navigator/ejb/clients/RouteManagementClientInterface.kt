@@ -1,13 +1,9 @@
 package com.ifmo.se.navigator.ejb.clients
 
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.LocationResponseDto
-import generated.com.ifmo.se.route.dto.RouteDto
-import generated.com.ifmo.se.route.dto.RouteResponseDto
-import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
-import generated.com.ifmo.se.route.dto.SortFieldsDto
+import generated.com.ifmo.se.route.dto.*
+import jakarta.ejb.Remote
 
+@Remote
 interface RouteManagementClientInterface {
     fun addRoute(request: RouteUpsertRequestDto): RouteDto
     fun getRoutes(

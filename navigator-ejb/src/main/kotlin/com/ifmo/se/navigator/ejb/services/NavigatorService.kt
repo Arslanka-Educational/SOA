@@ -7,10 +7,12 @@ import com.ifmo.se.navigator.models.Route
 import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
 import generated.com.ifmo.se.route.dto.SortFieldsDto
 import jakarta.ejb.EJB
+import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 
 @Stateless
-class NavigatorService {
+@Startup
+class NavigatorService: NavigatorServiceInterface {
 
     @EJB
     private lateinit var locationManagementService: LocationManagementService
@@ -18,7 +20,7 @@ class NavigatorService {
     @EJB
     private lateinit var routeManagementService: RouteManagementService
 
-    fun addRoute(
+    override fun addRoute(
         idFrom: LocationId,
         idTo: LocationId,
         distance: Double,
@@ -39,7 +41,7 @@ class NavigatorService {
         )
     }
 
-    fun getRoutesBetweenLocations(
+    override fun getRoutesBetweenLocations(
         idFrom: LocationId,
         idTo: LocationId,
         shortest: Boolean

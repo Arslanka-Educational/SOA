@@ -9,12 +9,10 @@ import jakarta.ws.rs.client.ClientBuilder
 import jakarta.ws.rs.client.Entity
 import jakarta.ws.rs.core.MediaType
 import org.apache.hc.core5.ssl.SSLContextBuilder
-import org.jboss.ejb3.annotation.Pool
 import javax.net.ssl.SSLContext
 
 @Stateless
 @Startup
-@Pool("route-management-pool")
 class RouteManagementClientImpl : RouteManagementClientInterface {
 
     private lateinit var httpClient: Client
