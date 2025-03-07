@@ -34,6 +34,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation(project(":navigator-models"))
+    implementation(project(":navigator-ejb"))
 }
 
 configurations {

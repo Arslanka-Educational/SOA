@@ -1,10 +1,10 @@
 package com.ifmo.se.navigator.controllers
 
+import com.ifmo.se.navigator.ejb.services.NavigatorService
 import com.ifmo.se.navigator.mappers.toNavigatorRouteDto
 import com.ifmo.se.navigator.mappers.toRoutesResponse
 import com.ifmo.se.navigator.models.Coordinate
 import com.ifmo.se.navigator.models.LocationId
-import com.ifmo.se.navigator.services.NavigatorService
 import generated.com.ifmo.se.navigator.api.NavigatorApi
 import generated.com.ifmo.se.navigator.dto.RouteAddRequestDto
 import generated.com.ifmo.se.navigator.dto.RouteDto

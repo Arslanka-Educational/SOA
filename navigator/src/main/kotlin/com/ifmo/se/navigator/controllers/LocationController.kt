@@ -1,9 +1,9 @@
 package com.ifmo.se.navigator.com.ifmo.se.navigator.controllers
 
-import com.ifmo.se.navigator.services.LocationManagementService
+import com.ifmo.se.navigator.ejb.services.LocationManagementService
+import com.ifmo.se.navigator.mappers.toLocationResponseDto
 import generated.com.ifmo.se.navigator.api.LocationsApi
 import generated.com.ifmo.se.navigator.dto.LocationResponseDto
-import kotlinx.coroutines.runBlocking
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -14,7 +14,6 @@ open class LocationController(
     override fun getLocations(
         limit: Int?,
         offset: Int?
-    ): ResponseEntity<LocationResponseDto> = runBlocking {
-        ResponseEntity.ok(locationManagementService.getLocations(limit, offset))
-    }
+    ): ResponseEntity<LocationResponseDto> =
+        ResponseEntity.ok(locationManagementService.getLocations(limit, offset)?.toLocationResponseDto())
 }

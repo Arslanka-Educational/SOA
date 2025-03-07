@@ -8,5 +8,10 @@ data class Location(
     val id: Int?
 )
 
+data class LocationResponse(
+    val total: Int?,
+    val locations: List<Location>?,
+)
+
 @JvmInline
 value class LocationId(val id: Long)
