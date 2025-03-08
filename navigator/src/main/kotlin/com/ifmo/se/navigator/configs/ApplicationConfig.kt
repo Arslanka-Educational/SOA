@@ -1,9 +1,7 @@
 package com.ifmo.se.navigator.com.ifmo.se.navigator.configs
 
 import com.ifmo.se.navigator.ejb.services.LocationManagementService
-import com.ifmo.se.navigator.ejb.services.LocationManagementServiceImpl
 import com.ifmo.se.navigator.ejb.services.NavigatorService
-import com.ifmo.se.navigator.ejb.services.NavigatorServiceImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import javax.naming.InitialContext

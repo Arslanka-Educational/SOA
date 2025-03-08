@@ -3,7 +3,6 @@ import org.gradle.kotlin.dsl.implementation
 plugins {
     kotlin("jvm") version "1.9.23"
     id("java")
-    id("war")
 }
 
 group = "com.ifmo.se.navigator.ejb"
@@ -39,12 +38,19 @@ kotlin {
     jvmToolchain(17)
 }
 
-tasks.withType<War> {
+tasks.withType<Jar> {
+    manifest {
+
+    }
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    configurations["compileClasspath"].forEach { file: File ->
-        from(zipTree(file.absoluteFile))
-    }
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 }
 
 tasks.test {
