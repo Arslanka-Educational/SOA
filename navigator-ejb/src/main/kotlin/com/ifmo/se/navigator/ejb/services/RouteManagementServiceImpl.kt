@@ -1,6 +1,7 @@
 package com.ifmo.se.navigator.ejb.services
 
 import RouteManagementClientImpl
+import com.ifmo.se.navigator.ejb.clients.RouteManagementClientInterface
 import com.ifmo.se.navigator.ejb.mappers.toDomain
 import com.ifmo.se.navigator.ejb.mappers.toRouteUpsertRequestDto
 import com.ifmo.se.navigator.models.EnrichedRoute
@@ -11,17 +12,16 @@ import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 import jakarta.inject.Inject
 
-@Stateless
+@Stateless(name = "RouteManagementServiceBean")
 @Startup
-open class RouteManagementServiceImpl {
+open class RouteManagementServiceImpl @Inject constructor(
+    private val routeManagementClientImpl: RouteManagementClientInterface,
+) : RouteManagementService {
 
-    @Inject
-    private lateinit var routeManagementClientImpl: RouteManagementClientImpl
-
-    internal fun addRoute(route: Route): EnrichedRoute =
+    override fun addRoute(route: Route): EnrichedRoute =
         toDomain(routeManagementClientImpl.addRoute(toRouteUpsertRequestDto(route)))
 
-    internal fun getRoutes(
+    override fun getRoutes(
         limit: Int?,
         offset: Int?,
         sortBy: List<SortFieldsDto>?,

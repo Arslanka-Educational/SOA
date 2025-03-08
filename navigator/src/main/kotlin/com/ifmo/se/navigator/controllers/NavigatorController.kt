@@ -1,6 +1,6 @@
 package com.ifmo.se.navigator.controllers
 
-import com.ifmo.se.navigator.ejb.services.NavigatorServiceInterface
+import com.ifmo.se.navigator.ejb.services.NavigatorService
 import com.ifmo.se.navigator.mappers.toNavigatorRouteDto
 import com.ifmo.se.navigator.mappers.toRoutesResponse
 import com.ifmo.se.navigator.models.Coordinate
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 open class NavigatorController(
-    private val navigatorService: NavigatorServiceInterface,
+    private val navigatorServiceImpl: NavigatorService,
 ) : NavigatorApi {
     override fun addRoute(
         idFrom: Long,
@@ -24,7 +24,7 @@ open class NavigatorController(
         routeAddRequestDto: RouteAddRequestDto,
     ): ResponseEntity<RouteDto> = runBlocking {
         with(routeAddRequestDto) {
-            navigatorService.addRoute(
+            navigatorServiceImpl.addRoute(
                 idFrom = LocationId(idFrom),
                 idTo = LocationId(idTo),
                 distance = distance,
@@ -37,7 +37,7 @@ open class NavigatorController(
     }
 
     override fun getRoute(idFrom: Long, idTo: Long, shortest: Boolean): ResponseEntity<RouteResponseDto> = runBlocking {
-        navigatorService.getRoutesBetweenLocations(
+        navigatorServiceImpl.getRoutesBetweenLocations(
             idFrom = LocationId(idFrom),
             idTo = LocationId(idTo),
             shortest = shortest,

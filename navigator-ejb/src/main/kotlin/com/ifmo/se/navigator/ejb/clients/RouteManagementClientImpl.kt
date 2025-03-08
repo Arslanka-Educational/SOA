@@ -2,6 +2,7 @@ import com.ifmo.se.navigator.ejb.PropertiesUtil
 import com.ifmo.se.navigator.ejb.clients.RouteManagementClientInterface
 import generated.com.ifmo.se.route.dto.*
 import jakarta.annotation.PostConstruct
+import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 import jakarta.ws.rs.client.Client
 import jakarta.ws.rs.client.ClientBuilder
@@ -10,7 +11,8 @@ import jakarta.ws.rs.core.MediaType
 import org.apache.hc.core5.ssl.SSLContextBuilder
 import javax.net.ssl.SSLContext
 
-@Stateless
+@Stateless(name = "RouteManagementClientBean")
+@Startup
 open class RouteManagementClientImpl : RouteManagementClientInterface {
 
     private lateinit var httpClient: Client

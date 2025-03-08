@@ -6,19 +6,17 @@ import com.ifmo.se.navigator.models.LocationId
 import com.ifmo.se.navigator.models.Route
 import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
 import generated.com.ifmo.se.route.dto.SortFieldsDto
-import jakarta.ejb.EJB
 import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
+import jakarta.inject.Inject
 
-@Stateless
+@Stateless(name = "NavigatorServiceBean")
 @Startup
-open class NavigatorServiceImpl: NavigatorService {
+open class NavigatorServiceImpl @Inject constructor(
+    private val locationManagementServiceImpl: LocationManagementService,
+    private val routeManagementServiceImpl: RouteManagementService,
+): NavigatorService {
 
-    @EJB
-    private lateinit var locationManagementService: LocationManagementServiceImpl
-
-    @EJB
-    private lateinit var routeManagementService: RouteManagementService
 
     override fun addRoute(
         idFrom: LocationId,
@@ -27,10 +25,10 @@ open class NavigatorServiceImpl: NavigatorService {
         name: String,
         coordinate: Coordinate?
     ): EnrichedRoute {
-        val locationFrom = locationManagementService.getLocationById(idFrom)
-        val locationTo = locationManagementService.getLocationById(idTo)
+        val locationFrom = locationManagementServiceImpl.getLocationById(idFrom)
+        val locationTo = locationManagementServiceImpl.getLocationById(idTo)
 
-        return routeManagementService.addRoute(
+        return routeManagementServiceImpl.addRoute(
             Route(
                 name = name,
                 coordinate = coordinate,
@@ -57,7 +55,7 @@ open class NavigatorServiceImpl: NavigatorService {
             SortFieldsDto.MinusDistance
         }
 
-        return routeManagementService.getRoutes(
+        return routeManagementServiceImpl.getRoutes(
             filter = filterParameters,
             sortBy = listOf(sortField),
             limit = 10,

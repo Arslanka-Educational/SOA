@@ -54,6 +54,7 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
+
 tasks.withType<War> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
