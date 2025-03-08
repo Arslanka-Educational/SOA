@@ -9,7 +9,6 @@ import generated.com.ifmo.se.navigator.api.NavigatorApi
 import generated.com.ifmo.se.navigator.dto.RouteAddRequestDto
 import generated.com.ifmo.se.navigator.dto.RouteDto
 import generated.com.ifmo.se.navigator.dto.RouteResponseDto
-import kotlinx.coroutines.runBlocking
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -22,7 +21,7 @@ open class NavigatorController(
         idTo: Long,
         distance: Double,
         routeAddRequestDto: RouteAddRequestDto,
-    ): ResponseEntity<RouteDto> = runBlocking {
+    ): ResponseEntity<RouteDto> =
         with(routeAddRequestDto) {
             navigatorServiceImpl.addRoute(
                 idFrom = LocationId(idFrom),
@@ -31,12 +30,11 @@ open class NavigatorController(
                 coordinate = coordinates?.let { Coordinate(x = it.x, y = it.y) },
                 name = name,
             )
+        }.let {
+            ResponseEntity.ok(it.toNavigatorRouteDto())
         }
-    }.let {
-        ResponseEntity.ok(it.toNavigatorRouteDto())
-    }
 
-    override fun getRoute(idFrom: Long, idTo: Long, shortest: Boolean): ResponseEntity<RouteResponseDto> = runBlocking {
+    override fun getRoute(idFrom: Long, idTo: Long, shortest: Boolean): ResponseEntity<RouteResponseDto> =
         navigatorServiceImpl.getRoutesBetweenLocations(
             idFrom = LocationId(idFrom),
             idTo = LocationId(idTo),
@@ -44,5 +42,4 @@ open class NavigatorController(
         ).let {
             ResponseEntity.ok(it?.toRoutesResponse())
         }
-    }
 }

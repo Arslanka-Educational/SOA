@@ -4,7 +4,8 @@ spring:
   main:
     banner-mode: "off"
 server:
-  port: 8443
+  port: 1516
+server.http.port: 1616
 logging:
   level:
     root: INFO

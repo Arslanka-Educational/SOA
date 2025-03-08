@@ -3,8 +3,6 @@ plugins {
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.3"
     id("org.openapi.generator") version "7.0.0"
-    id("war")
-    id("com.mkring.wildlydeplyplugin.deploy-wildfly-plugin") version "0.3.0"
 }
 
 group = "com.ifmo.se.navigator"
@@ -16,9 +14,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-tomcat")
-    }
     implementation("org.openapitools:openapi-generator:7.0.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -27,40 +22,28 @@ dependencies {
     implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("javax.servlet:javax.servlet-api:4.0.1")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
     implementation(project(":navigator-models"))
     implementation(project(":navigator-ejb"))
-    implementation("jakarta.ejb:jakarta.ejb-api:4.0.0")  // EJB 4.0
-    implementation("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.0")  // CDI 3.0
-    implementation("jakarta.platform:jakarta.jakartaee-api:10.0.0")
+    implementation("org.wildfly:wildfly-ejb-client-bom:32.0.0.Final")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 configurations {
-    all {
-        exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+    configureEach {
         exclude(group = "ch.qos.logback", module = "logback-classic")
-        exclude(group = "org.apache.logging.log4j", module = "log4j-to-slf4j")
     }
 }
+
 tasks.test {
     useJUnitPlatform()
 }
 kotlin {
     jvmToolchain(17)
-}
-
-tasks.withType<War> {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    configurations["compileClasspath"].forEach { file: File ->
-        from(zipTree(file.absoluteFile))
-    }
 }
 
 

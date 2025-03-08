@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  navigator-ejb:
+    container_name: navigator-ejb
+    build:
+      context: ./navigator-ejb
+      dockerfile: wildfly/Dockerfile
+    ports:
+      - "8081:8080"
+      - "9990:9990"
+    networks:
+      - soa
+
+  navigator-1:
+    container_name: navigator-1
+    image: openjdk:21-oracle
+    volumes:
+      - ./navigator/build/libs/navigator-1.jar:/navigator-1.jar
+    command: [ "java", "-jar", "navigator-1.jar" ]
+    ports:
+      - "1516:1516"
+    environment:
+      SERVICE_ID: navigator-1
+      PROVIDER_URL: "http-remoting://navigator-ejb:8080"
+    networks:
+      - soa
+
+  navigator-2:
+    container_name: navigator-2
+    image: openjdk:21-oracle
+    volumes:
+      - ./navigator/build/libs/navigator-1.jar:/navigator-1.jar
+    command: [ "java", "-jar", "navigator-1.jar" ]
+    ports:
+      - "1517:1516"
+    environment:
+      SERVICE_ID: navigator-2
+      PROVIDER_URL: "http-remoting://navigator-ejb:8080"
+    networks:
+      - soa
+
+networks:
+  soa:
+    name: soa-network
+    external: true

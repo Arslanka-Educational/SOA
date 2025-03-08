@@ -1,6 +1,5 @@
 package com.ifmo.se.navigator.ejb.services
 
-import RouteManagementClientImpl
 import com.ifmo.se.navigator.ejb.clients.RouteManagementClientInterface
 import com.ifmo.se.navigator.ejb.mappers.toDomain
 import com.ifmo.se.navigator.ejb.mappers.toRouteUpsertRequestDto
@@ -11,9 +10,11 @@ import generated.com.ifmo.se.route.dto.SortFieldsDto
 import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 import jakarta.inject.Inject
+import org.jboss.ejb3.annotation.Pool
 
 @Stateless(name = "RouteManagementServiceBean")
 @Startup
+@Pool("routes-pool")
 open class RouteManagementServiceImpl @Inject constructor(
     private val routeManagementClientImpl: RouteManagementClientInterface,
 ) : RouteManagementService {
