@@ -12,7 +12,7 @@ import jakarta.ejb.Stateless
 
 @Stateless
 @Startup
-class NavigatorService: NavigatorServiceInterface {
+open class NavigatorService: NavigatorServiceInterface {
 
     @EJB
     private lateinit var locationManagementService: LocationManagementService

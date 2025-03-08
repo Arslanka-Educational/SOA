@@ -9,7 +9,7 @@ open class ApplicationConfig {
     @Bean
     open fun locationManagementServiceInterface(): JndiObjectFactoryBean {
         val factoryBean = JndiObjectFactoryBean()
-        factoryBean.jndiName = "ejb:/navigator-ejb-1.0-SNAPSHOT/LocationManagementService!com.ifmo.se.navigator.ejb.services.LocationManagementServiceInterface"
+        factoryBean.jndiName = "java:global:/navigator-ejb-1.0-SNAPSHOT/LocationManagementService!com.ifmo.se.navigator.ejb.services.LocationManagementServiceInterface"
         factoryBean.isResourceRef = true
         return factoryBean
     }
@@ -17,7 +17,7 @@ open class ApplicationConfig {
     @Bean
     open fun navigatorServiceInterface(): JndiObjectFactoryBean {
         val factoryBean = JndiObjectFactoryBean()
-        factoryBean.jndiName = "ejb:/navigator-ejb-1.0-SNAPSHOT/NavigatorService!com.ifmo.se.navigator.ejb.services.NavigatorServiceInterface"
+        factoryBean.jndiName = "java:global:/navigator-ejb-1.0-SNAPSHOT/NavigatorService!com.ifmo.se.navigator.ejb.services.NavigatorServiceInterface"
         factoryBean.isResourceRef = true
         return factoryBean
     }

@@ -2,7 +2,6 @@ import com.ifmo.se.navigator.ejb.PropertiesUtil
 import com.ifmo.se.navigator.ejb.clients.RouteManagementClientInterface
 import generated.com.ifmo.se.route.dto.*
 import jakarta.annotation.PostConstruct
-import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
 import jakarta.ws.rs.client.Client
 import jakarta.ws.rs.client.ClientBuilder
@@ -12,8 +11,7 @@ import org.apache.hc.core5.ssl.SSLContextBuilder
 import javax.net.ssl.SSLContext
 
 @Stateless
-@Startup
-class RouteManagementClientImpl : RouteManagementClientInterface {
+open class RouteManagementClientImpl : RouteManagementClientInterface {
 
     private lateinit var httpClient: Client
     private lateinit var sslContext: SSLContext

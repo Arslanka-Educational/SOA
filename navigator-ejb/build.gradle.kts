@@ -18,6 +18,10 @@ dependencies {
     implementation("jakarta.ejb:jakarta.ejb-api:4.0.0")
     implementation("jakarta.ws.rs:jakarta.ws.rs-api:3.0.0")
     implementation("org.jboss.ejb3:jboss-ejb3-ext-api:2.4.0.Final")
+    implementation("jakarta.ejb:jakarta.ejb-api:4.0.1")
+    implementation("jakarta.annotation:jakarta.annotation-api:2.0.0")
+    implementation("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.0")
+    implementation("org.jboss.ejb3:jboss-ejb3-ext-api:2.4.0.Final")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
     implementation("org.openapitools:openapi-generator:7.0.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -35,11 +39,18 @@ kotlin {
 }
 
 tasks.withType<Jar> {
+    manifest {
+
+    }
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    configurations["compileClasspath"].forEach { file: File ->
-        from(zipTree(file.absoluteFile))
-    }
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+    })
 }
 
 tasks.test {

@@ -11,7 +11,7 @@ import jakarta.ejb.Stateless
 
 @Stateless
 @Startup
-class LocationManagementService : LocationManagementServiceInterface {
+open class LocationManagementService : LocationManagementServiceInterface {
 
     @EJB
     private lateinit var routeManagementClient: RouteManagementClientInterface

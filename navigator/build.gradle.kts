@@ -54,6 +54,14 @@ tasks.test {
 kotlin {
     jvmToolchain(17)
 }
+tasks.withType<War> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+}
+
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
@@ -103,6 +111,7 @@ sourceSets {
         }
     }
 }
+
 
 tasks.named("compileKotlin") {
     dependsOn("generateServer")

@@ -13,7 +13,7 @@ import jakarta.ejb.Stateless
 
 @Stateless
 @Startup
-class RouteManagementService {
+open class RouteManagementService {
 
     @EJB
     private lateinit var routeManagementClient: RouteManagementClientInterface
