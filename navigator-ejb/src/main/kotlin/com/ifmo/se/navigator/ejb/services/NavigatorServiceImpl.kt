@@ -1,22 +1,23 @@
 package com.ifmo.se.navigator.ejb.services
 
+import com.ifmo.se.navigator.dtos.GetRoutesFilterParameterDto
+import com.ifmo.se.navigator.dtos.SortFieldsDto
 import com.ifmo.se.navigator.models.Coordinate
 import com.ifmo.se.navigator.models.EnrichedRoute
 import com.ifmo.se.navigator.models.LocationId
 import com.ifmo.se.navigator.models.Route
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.SortFieldsDto
-import jakarta.ejb.Startup
+import jakarta.ejb.EJB
 import jakarta.ejb.Stateless
 import jakarta.inject.Inject
 
-@Stateless(name = "NavigatorServiceBean")
-@Startup
-open class NavigatorServiceImpl @Inject constructor(
-    private val locationManagementServiceImpl: LocationManagementService,
-    private val routeManagementServiceImpl: RouteManagementService,
-): NavigatorService {
+@Stateless
+open class NavigatorServiceImpl : NavigatorService {
 
+    @Inject
+    private lateinit var locationManagementServiceImpl: LocationManagementServiceImpl
+
+    @Inject
+    private lateinit var routeManagementServiceImpl: RouteManagementServiceImpl
 
     override fun addRoute(
         idFrom: LocationId,

@@ -1,7 +1,7 @@
 package com.ifmo.se.navigator.ejb.mappers
 
 import com.ifmo.se.navigator.models.Coordinate
-import generated.com.ifmo.se.route.dto.CoordinatesDto
+import com.ifmo.se.navigator.dtos.CoordinatesDto
 
 internal fun Coordinate.toRouteCoordinatesDto() = CoordinatesDto(
     x = x,

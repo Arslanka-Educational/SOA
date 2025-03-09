@@ -1,9 +1,7 @@
+import com.ifmo.se.navigator.dtos.*
 import com.ifmo.se.navigator.ejb.PropertiesUtil
 import com.ifmo.se.navigator.ejb.clients.RouteManagementClientInterface
-import generated.com.ifmo.se.route.dto.*
 import jakarta.annotation.PostConstruct
-import jakarta.ejb.Startup
-import jakarta.ejb.Stateless
 import jakarta.ws.rs.client.Client
 import jakarta.ws.rs.client.ClientBuilder
 import jakarta.ws.rs.client.Entity
@@ -11,9 +9,7 @@ import jakarta.ws.rs.core.MediaType
 import org.apache.hc.core5.ssl.SSLContextBuilder
 import javax.net.ssl.SSLContext
 
-@Stateless(name = "RouteManagementClientBean")
-@Startup
-open class RouteManagementClientImpl : RouteManagementClientInterface {
+class RouteManagementClientImpl : RouteManagementClientInterface {
 
     private lateinit var httpClient: Client
     private lateinit var sslContext: SSLContext
@@ -27,8 +23,8 @@ open class RouteManagementClientImpl : RouteManagementClientInterface {
         val keystorePassword = propertiesUtil.getValueByPropertyNameOrEmpty("ssl.keystore.password").toCharArray()
 
         sslContext = SSLContextBuilder().loadTrustMaterial(
-                this.javaClass.classLoader.getResource(keystorePath), keystorePassword
-            ).build()
+            this.javaClass.classLoader.getResource(keystorePath), keystorePassword
+        ).build()
 
         httpClient = ClientBuilder.newBuilder().sslContext(sslContext).hostnameVerifier { _, _ -> true }.build()
 

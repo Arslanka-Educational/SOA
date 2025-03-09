@@ -1,9 +1,9 @@
 package com.ifmo.se.navigator.ejb.mappers
 
+import com.ifmo.se.navigator.dtos.RouteDto
+import com.ifmo.se.navigator.dtos.RouteUpsertRequestDto
 import com.ifmo.se.navigator.models.EnrichedRoute
 import com.ifmo.se.navigator.models.Route
-import generated.com.ifmo.se.route.dto.RouteDto
-import generated.com.ifmo.se.route.dto.RouteUpsertRequestDto
 
 internal fun toRouteUpsertRequestDto(route: Route) = RouteUpsertRequestDto(
     name = route.name,

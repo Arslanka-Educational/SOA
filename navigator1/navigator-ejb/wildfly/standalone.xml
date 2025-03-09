@@ -135,6 +135,17 @@
                     <driver>h2</driver>
                     <security user-name="sa" password="sa"/>
                 </datasource>
+                <datasource jndi-name="java:/PostgresDS" pool-name="PostgresDS">
+                    <connection-url>jdbc:postgresql://postgres:5432/products</connection-url>
+                    <driver-class>org.postgresql.Driver</driver-class>
+                    <driver>postgresql-42.7.3.jar</driver>
+                    <security user-name="gadelsha" password="gadelsha_chistai"/>
+                    <validation>
+                        <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+                        <validate-on-match>true</validate-on-match>
+                        <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+                    </validation>
+                </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
@@ -189,9 +200,9 @@
             <pools>
                 <bean-instance-pools>
                     <strict-max-pool name="ejb-pool" derive-size="from-worker-pools" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
-                    <strict-max-pool name="routes-pool" derive-size="from-worker-pools" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
                     <strict-max-pool name="slsb-strict-max-pool" derive-size="from-worker-pools" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
                     <strict-max-pool name="mdb-strict-max-pool" derive-size="from-cpu-count" instance-acquisition-timeout="5" instance-acquisition-timeout-unit="MINUTES"/>
+                    <strict-max-pool name="products-pool" max-pool-size="100" instance-acquisition-timeout="5"/>
                 </bean-instance-pools>
             </pools>
             <caches>

@@ -1,23 +1,20 @@
 package com.ifmo.se.navigator.ejb.services
 
-import com.ifmo.se.navigator.ejb.clients.RouteManagementClientInterface
+import RouteManagementClientImpl
+import com.ifmo.se.navigator.dtos.GetRoutesFilterParameterDto
+import com.ifmo.se.navigator.dtos.SortFieldsDto
 import com.ifmo.se.navigator.ejb.mappers.toDomain
 import com.ifmo.se.navigator.ejb.mappers.toRouteUpsertRequestDto
 import com.ifmo.se.navigator.models.EnrichedRoute
 import com.ifmo.se.navigator.models.Route
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.SortFieldsDto
-import jakarta.ejb.Startup
 import jakarta.ejb.Stateless
-import jakarta.inject.Inject
 import org.jboss.ejb3.annotation.Pool
 
-@Stateless(name = "RouteManagementServiceBean")
-@Startup
+@Stateless
 @Pool("routes-pool")
-open class RouteManagementServiceImpl @Inject constructor(
-    private val routeManagementClientImpl: RouteManagementClientInterface,
-) : RouteManagementService {
+open class RouteManagementServiceImpl : RouteManagementService {
+
+    private val routeManagementClientImpl = RouteManagementClientImpl()
 
     override fun addRoute(route: Route): EnrichedRoute =
         toDomain(routeManagementClientImpl.addRoute(toRouteUpsertRequestDto(route)))

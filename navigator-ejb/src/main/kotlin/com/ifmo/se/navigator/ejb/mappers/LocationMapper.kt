@@ -1,9 +1,9 @@
 package com.ifmo.se.navigator.ejb.mappers
 
+import com.ifmo.se.navigator.dtos.LocationDto
 import com.ifmo.se.navigator.models.Location
 import com.ifmo.se.navigator.models.LocationResponse
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.LocationResponseDto
+import com.ifmo.se.navigator.dtos.LocationResponseDto
 
 internal fun Location.toRouteLocationDto() = LocationDto(
     x = x,
