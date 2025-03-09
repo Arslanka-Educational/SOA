@@ -1,5 +1,6 @@
 package com.ifmo.se.navigator.models
 
+import java.io.Serializable
 import java.time.OffsetDateTime
 
 sealed class RouteBase {
@@ -16,7 +17,7 @@ data class Route(
     override val locationFrom: Location?,
     override val locationTo: Location?,
     override val distance: Double,
-) : RouteBase()
+) : RouteBase(), Serializable
 
 data class EnrichedRoute(
     val id: Long,
@@ -26,5 +27,5 @@ data class EnrichedRoute(
     override val locationTo: Location?,
     override val distance: Double?,
     val creationDate: OffsetDateTime,
-) : RouteBase()
+) : RouteBase(), Serializable
 

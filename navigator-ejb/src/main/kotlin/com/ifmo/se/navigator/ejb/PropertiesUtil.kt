@@ -3,7 +3,7 @@ package com.ifmo.se.navigator.ejb
 import jakarta.ejb.Stateless
 
 @Stateless
-class PropertiesUtil {
+open class PropertiesUtil {
     private val propertiesMap: MutableMap<String, String> = mutableMapOf()
 
     init {

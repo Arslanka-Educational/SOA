@@ -2,12 +2,13 @@ package com.ifmo.se.navigator.dtos
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
+import java.io.Serializable
 
 /**
-* 
-* Values: Id,Name,Coordinates,CreationDate,From,To,Distance,MinusId,MinusName,MinusCoordinates,MinusCreationDate,MinusFrom,MinusTo,MinusDistance
-*/
-enum class SortFieldsDto(@get:JsonValue val value: kotlin.String) {
+ *
+ * Values: Id,Name,Coordinates,CreationDate,From,To,Distance,MinusId,MinusName,MinusCoordinates,MinusCreationDate,MinusFrom,MinusTo,MinusDistance
+ */
+enum class SortFieldsDto(@get:JsonValue val value: kotlin.String) : Serializable {
 
     Id("Id"),
     Name("Name"),
@@ -28,7 +29,7 @@ enum class SortFieldsDto(@get:JsonValue val value: kotlin.String) {
         @JvmStatic
         @JsonCreator
         fun forValue(value: kotlin.String): SortFieldsDto {
-                return SortFieldsDto.entries.first{ it -> it.value == value}
+            return SortFieldsDto.entries.first { it -> it.value == value }
         }
     }
 }

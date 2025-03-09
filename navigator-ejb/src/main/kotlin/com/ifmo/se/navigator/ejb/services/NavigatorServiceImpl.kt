@@ -8,16 +8,15 @@ import com.ifmo.se.navigator.models.LocationId
 import com.ifmo.se.navigator.models.Route
 import jakarta.ejb.EJB
 import jakarta.ejb.Stateless
-import jakarta.inject.Inject
 
 @Stateless
 open class NavigatorServiceImpl : NavigatorService {
 
-    @Inject
-    private lateinit var locationManagementServiceImpl: LocationManagementServiceImpl
+    @EJB
+    private lateinit var locationManagementServiceImpl: LocationManagementService
 
-    @Inject
-    private lateinit var routeManagementServiceImpl: RouteManagementServiceImpl
+    @EJB
+    private lateinit var routeManagementServiceImpl: RouteManagementService
 
     override fun addRoute(
         idFrom: LocationId,
