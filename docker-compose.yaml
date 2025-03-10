@@ -39,7 +39,36 @@ services:
     networks:
       - soa
 
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - soa
+
+  route-management-service-1:
+    container_name: route-management-service-1
+    image: openjdk:21-oracle
+    volumes:
+      - ./route-management-service/build/libs/route-management-service-1.jar:/route-management-service-1.jar
+    command: [ "java", "-jar", "route-management-service-1.jar" ]
+    ports:
+      - "8444:8444"
+    environment:
+      SERVICE_ID: route-management-service-1
+    networks:
+      - soa
+
 networks:
   soa:
     name: soa-network
     external: true
+
+volumes:
+  postgres_data:

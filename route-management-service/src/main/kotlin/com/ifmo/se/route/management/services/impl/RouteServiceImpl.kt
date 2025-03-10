@@ -5,7 +5,8 @@ import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
 import mu.KLogging
-import org.example.com.ifmo.se.route.management.data.mappers.RouteMapper
+import org.example.com.ifmo.se.route.management.data.mappers.mapToDto
+import org.example.com.ifmo.se.route.management.data.mappers.mapToEntity
 import org.example.com.ifmo.se.route.management.data.models.Coordinates
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.models.Route
@@ -22,7 +23,6 @@ open class RouteServiceImpl(
     private val routeRepository: RouteRepository,
     private val locationRepository: LocationRepository,
     private val entityManager: EntityManager,
-    private val routeMapper: RouteMapper,
 ) : RouteService {
     private companion object : KLogging()
 
@@ -38,7 +38,7 @@ open class RouteServiceImpl(
         val total = routes.count()
 
         return RouteResponseDto(
-            routes = routes.map { routeMapper.map(it) },
+            routes = routes.map { it.mapToDto() },
             total = total,
             limit = limit ?: 10,
             offset = offset ?: 0
@@ -50,28 +50,28 @@ open class RouteServiceImpl(
         val fromLocation = locationRepository.findById(routeDto.from!!.id!!.toLong())
             .orElseGet {
                 // Create and save a new Location entity if it doesn't exist
-                val newLocation = routeMapper.map(routeDto.from)
+                val newLocation = routeDto.from.mapToEntity()
                 entityManager.merge(newLocation)
             }
 
         val toLocation = locationRepository.findById(routeDto.to!!.id!!.toLong())
             .orElseGet {
                 // Create and save a new Location entity if it doesn't exist
-                val newLocation = routeMapper.map(routeDto.to)
+                val newLocation = routeDto.to.mapToEntity()
                 entityManager.merge(newLocation)
             }
 
         // Create the Route entity and associate it with the Location entities
         val route = Route(
             name = routeDto.name,
-            coordinates = routeMapper.map(routeDto.coordinates!!),
+            coordinates = routeDto.coordinates!!.mapToEntity(),
             distance = routeDto.distance,
             from = fromLocation,
             to = toLocation
         )
 
         val savedRoute = entityManager.merge(route)
-        return routeMapper.map(savedRoute).also { it.creationDate.toOffsetTime() }
+        return savedRoute.mapToDto().also { it.creationDate.toOffsetTime() }
     }
 
     @Transactional
@@ -97,14 +97,14 @@ open class RouteServiceImpl(
 
         val updatedRoute = routeRepository.save(existingRoute)
 
-        return routeMapper.map(updatedRoute)
+        return updatedRoute.mapToDto()
     }
 
     override fun getById(routeId: Int): RouteDto {
         val route = routeRepository.findById(routeId.toLong()).orElseThrow {
             EntityNotFoundException("Route with ID $routeId not found")
         }
-        return routeMapper.map(route)
+        return route.mapToDto()
     }
 
     @Transactional
@@ -115,7 +115,7 @@ open class RouteServiceImpl(
 
         routeRepository.delete(route)
 
-        return routeMapper.map(route)
+        return route.mapToDto()
     }
 
     @Transactional
@@ -125,7 +125,7 @@ open class RouteServiceImpl(
 
         routeRepository.delete(route)
 
-        return routeMapper.map(route)
+        return route.mapToDto()
     }
 
     override fun getRoutesCountByDistance(maxDistance: Double?): Int {

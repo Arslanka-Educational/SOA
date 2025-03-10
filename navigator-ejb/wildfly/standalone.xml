@@ -338,7 +338,7 @@
                     <key-store name="applicationKS">
                         <credential-reference clear-text="password"/>
                         <implementation type="JKS"/>
-                        <file path="application.keystore" relative-to="jboss.server.config.dir"/>
+                        <file path="soa.keystore" relative-to="jboss.server.config.dir"/>
                     </key-store>
                 </key-stores>
                 <key-managers>
@@ -509,8 +509,8 @@
         </outbound-socket-binding>
     </socket-binding-group>
     <deployments>
-        <deployment name="PostgreSQL 42.7.3.jar" runtime-name="PostgreSQL 42.7.3.jar">
-            <content sha1="24f3e9f7231428cd20eb4dde00dd3fce44e05464"/>
-        </deployment>
+<!--        <deployment name="PostgreSQL 42.7.3.jar" runtime-name="PostgreSQL 42.7.3.jar">-->
+<!--            <content sha1="24f3e9f7231428cd20eb4dde00dd3fce44e05464"/>-->
+<!--        </deployment>-->
     </deployments>
 </server>
