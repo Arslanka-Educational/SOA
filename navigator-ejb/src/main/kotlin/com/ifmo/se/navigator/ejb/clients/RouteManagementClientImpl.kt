@@ -43,6 +43,7 @@ open class RouteManagementClientImpl : RouteManagementClient {
         return response.readEntity(RouteResponseDto::class.java)
     }
 
+
     override fun getLocations(
         limit: Int?, offset: Int?
     ): LocationResponseDto {
@@ -50,6 +51,9 @@ open class RouteManagementClientImpl : RouteManagementClient {
 
         val webTarget = httpClient.target("$BASE_URL/locations").queryParam("limit", limit).queryParam("offset", offset)
         val response = webTarget.request(MediaType.APPLICATION_JSON).get()
+
+        println("response type: ${response.mediaType}")
+//        println("Response Body: ${response.readEntity(String::class.java)}")
 
         return response.readEntity(LocationResponseDto::class.java)
     }

@@ -6,10 +6,11 @@ import generated.com.ifmo.se.navigator.dto.LocationResponseDto
 import generated.com.ifmo.se.navigator.dto.LocationDto as NavigatorLocationDto
 
 internal fun Location.toNavigatorLocationDto() = NavigatorLocationDto(
-    x = x,
+    x = x!!,
     y = y,
-    z = z,
+    z = z!!,
     name = name,
+    id = id
 )
 
 internal fun LocationResponse.toLocationResponseDto() = LocationResponseDto(

@@ -10,7 +10,7 @@ import java.io.Serializable
  */
 data class RouteAddRequestDto(
 
-    @get:JsonProperty("name", required = true) var name: String,
+    @get:JsonProperty("name", required = true) var name: String? = null,
 
     @get:JsonProperty("coordinates") var coordinates: CoordinatesDto? = null
     ): Serializable

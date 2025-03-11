@@ -15,9 +15,9 @@ import java.io.Serializable
  */
 data class LocationDto(
 
-    @get:JsonProperty("x", required = true) var x: Int,
+    @get:JsonProperty("x", required = true) var x: Int? = null,
 
-    @get:JsonProperty("z", required = true) var z: Long,
+    @get:JsonProperty("z", required = true) var z: Long? = null,
 
     @get:JsonProperty("y") var y: Int? = null,
 

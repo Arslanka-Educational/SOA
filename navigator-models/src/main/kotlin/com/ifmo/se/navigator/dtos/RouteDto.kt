@@ -20,13 +20,13 @@ import java.io.Serializable
  */
 data class RouteDto(
 
-    @get:JsonProperty("id", required = true) var id: Long,
+    @get:JsonProperty("id", required = true) var id: Long? = null,
 
-    @get:JsonProperty("name", required = true) val name: String,
+    @get:JsonProperty("name", required = true) var name: String? = null,
 
-    @get:JsonProperty("coordinates", required = true) var coordinates: CoordinatesDto?,
+    @get:JsonProperty("coordinates", required = true) var coordinates: CoordinatesDto? = null,
 
-    @get:JsonProperty("creationDate", required = true) var creationDate: java.time.OffsetDateTime,
+    @get:JsonProperty("creationDate", required = true) var creationDate: java.time.OffsetDateTime? = null,
 
     @get:JsonProperty("from") var from: LocationDto? = null,
 

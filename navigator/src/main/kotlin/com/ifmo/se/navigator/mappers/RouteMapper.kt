@@ -12,11 +12,11 @@ internal fun List<EnrichedRoute>.toRoutesResponse() = RouteResponseDto(
 )
 
 internal fun EnrichedRoute.toNavigatorRouteDto() = NavigatorRouteDto(
-    id = this.id,
-    name = this.name,
+    id = this.id!!,
+    name = this.name!!,
     coordinates = this.coordinate?.toNavigatorCoordinatesDto(),
     from = this.locationFrom?.toNavigatorLocationDto(),
     to = this.locationTo?.toNavigatorLocationDto(),
     distance = this.distance,
-    creationDate = this.creationDate,
+    creationDate = this.creationDate!!,
 )

@@ -5,6 +5,6 @@ import generated.com.ifmo.se.route.dto.CoordinatesDto
 import generated.com.ifmo.se.navigator.dto.CoordinatesDto as NavigatorCoordinatesDto
 
 internal fun Coordinate.toNavigatorCoordinatesDto() = NavigatorCoordinatesDto(
-    x = x,
-    y = y,
+    x = x!!,
+    y = y!!,
 )

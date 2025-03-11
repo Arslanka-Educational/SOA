@@ -17,11 +17,11 @@ import java.io.Serializable
  */
 data class RouteUpsertRequestDto(
 
-    @get:JsonProperty("name", required = true) val name: kotlin.String,
+    @get:JsonProperty("name", required = true) val name: kotlin.String? = null,
 
-    @get:JsonProperty("coordinates", required = true) val coordinates: CoordinatesDto?,
+    @get:JsonProperty("coordinates", required = true) val coordinates: CoordinatesDto? = null,
 
-    @get:JsonProperty("distance", required = true) val distance: kotlin.Double,
+    @get:JsonProperty("distance", required = true) val distance: kotlin.Double? = null,
 
     @get:JsonProperty("from") val from: LocationDto? = null,
 

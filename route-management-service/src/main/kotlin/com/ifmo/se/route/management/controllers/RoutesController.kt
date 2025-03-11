@@ -29,20 +29,21 @@ open class RoutesController(
     }
 
     override fun getRoutes(
+        getRoutesFilterParameterDto: GetRoutesFilterParameterDto,
         limit: Int?,
         offset: Int?,
-        sortBy: List<SortFieldsDto>?,
-        getRoutesFilterParameter: GetRoutesFilterParameterDto?
+        sortBy: List<SortFieldsDto>?
     ): ResponseEntity<RouteResponseDto> {
         logger.info {
             """
             limit: $limit
             offset: $offset
             sortBy: $sortBy
-            filter: $getRoutesFilterParameter
+            filter: $getRoutesFilterParameterDto
         """.trimIndent()
         }
-        return ResponseEntity.ok(routeService.getPaginatedFilteredRoutes(getRoutesFilterParameter, offset, limit, sortBy))
+        return ResponseEntity.ok(routeService.getPaginatedFilteredRoutes(getRoutesFilterParameterDto, offset, limit, sortBy))
+
     }
 
     override fun getRoutesCounts(maxDistance: Double?): ResponseEntity<Int> {
