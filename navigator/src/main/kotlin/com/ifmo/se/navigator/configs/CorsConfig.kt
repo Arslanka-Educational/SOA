@@ -18,12 +18,14 @@ open class CorsConfig : WebMvcConfigurer {
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }
+
             cors {  }
             csrf { disable() }
         }
 
         return http.build()
     }
+
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")

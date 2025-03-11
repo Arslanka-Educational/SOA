@@ -4,8 +4,9 @@ import generated.com.ifmo.se.route.dto.LocationDto
 import generated.com.ifmo.se.route.dto.LocationResponseDto
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
+import mapToDto
 import mu.KLogging
-import org.example.com.ifmo.se.route.management.data.mappers.LocationMapper
+//import org.example.com.ifmo.se.route.management.data.mappers.LocationMapper
 import org.example.com.ifmo.se.route.management.data.mappers.toResponse
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.repositories.LocationRepository
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service
 @RequiredArgsConstructor
 open class LocationServiceImpl(
     private val locationRepository: LocationRepository,
-    private val locationMapper: LocationMapper,
 ) : LocationService {
     private companion object : KLogging()
 
@@ -27,7 +27,7 @@ open class LocationServiceImpl(
         val location = locationRepository.findById(locationId).orElseThrow {
             EntityNotFoundException("Location with ID $locationId not found")
         }
-        return locationMapper.map(location)
+        return location.mapToDto()
     }
 
     override suspend fun getLocations(
@@ -41,7 +41,6 @@ open class LocationServiceImpl(
             PageRequest.of(page, limit ?: 10)
         )
 
-        return locations.toResponse(locationMapper)
+        return locations.toResponse()
     }
-
 }

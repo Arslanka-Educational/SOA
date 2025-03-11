@@ -1,28 +1,19 @@
 package com.ifmo.se.navigator.mappers
 
 import com.ifmo.se.navigator.models.Location
-import generated.com.ifmo.se.route.dto.LocationDto
+import com.ifmo.se.navigator.models.LocationResponse
+import generated.com.ifmo.se.navigator.dto.LocationResponseDto
 import generated.com.ifmo.se.navigator.dto.LocationDto as NavigatorLocationDto
 
-internal fun Location.toRouteLocationDto() = LocationDto(
-    x = x,
-    y = y,
-    z = z,
-    name = name,
-    id = id,
-)
-
 internal fun Location.toNavigatorLocationDto() = NavigatorLocationDto(
-    x = x,
+    x = x!!,
     y = y,
-    z = z,
+    z = z!!,
     name = name,
+    id = id
 )
 
-internal fun LocationDto.toDomain() = Location(
-    x = this.x,
-    y = this.y,
-    z = this.z,
-    name = this.name,
-    id = this.id,
+internal fun LocationResponse.toLocationResponseDto() = LocationResponseDto(
+    total = total,
+    locations = locations?.map { it.toNavigatorLocationDto() },
 )

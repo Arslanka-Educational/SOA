@@ -1,14 +1,99 @@
-version: '3.8'
-
+version: "3.9"
 services:
-  navigator:
-    build:
-      context: ./navigator
-      dockerfile: Dockerfile
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     ports:
-      - "8080:8080"
+      - "80:80"
+    depends_on:
+      - navigator-1
+      - navigator-2
     networks:
-      - shared-network
+      - soa
+
+  navigator-ejb:
+    container_name: navigator-ejb
+    build:
+      context: ./navigator-ejb
+      dockerfile: wildfly/Dockerfile
+    ports:
+      - "8081:8080"
+      - "9990:9990"
+    networks:
+      - soa
+
+  navigator-1:
+    container_name: navigator-1
+    image: openjdk:21-oracle
+    volumes:
+      - ./navigator/build/libs/navigator-1.jar:/navigator-1.jar
+    command: [ "java", "-jar", "navigator-1.jar" ]
+    ports:
+      - "1516:1516"
+    environment:
+      SERVICE_ID: navigator-1
+      PROVIDER_URL: "http-remoting://navigator-ejb:8080"
+    networks:
+      - soa
+
+  navigator-2:
+    container_name: navigator-2
+    image: openjdk:21-oracle
+    volumes:
+      - ./navigator/build/libs/navigator-1.jar:/navigator-1.jar
+    command: [ "java", "-jar", "navigator-1.jar" ]
+    ports:
+      - "1517:1516"
+    environment:
+      SERVICE_ID: navigator-2
+      PROVIDER_URL: "http-remoting://navigator-ejb:8080"
+    networks:
+      - soa
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - soa
+
+  route-management-service-1:
+    container_name: route-management-service-1
+    image: openjdk:21-oracle
+    volumes:
+      - ./route-management-service/build/libs/route-management-service-1.jar:/route-management-service-1.jar
+    command: [ "java", "-jar", "route-management-service-1.jar" ]
+    ports:
+      - "8444:8444"
+    environment:
+      SERVICE_ID: route-management-service-1
+    networks:
+      - soa
+
+  consul-server:
+    image: hashicorp/consul:1.10.0
+    container_name: consul-server
+    restart: always
+    volumes:
+      - ./route-management-service/src/main/resources/consul/server.json:/consul/config/server.json:ro
+    networks:
+      - soa
+    ports:
+      - "8500:8500"
+    command: "agent"
 
 networks:
-  shared-network:
+  soa:
+    name: soa-network
+    external: true
+
+volumes:
+  postgres_data:

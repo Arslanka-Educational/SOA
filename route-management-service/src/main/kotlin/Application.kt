@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan
 @SpringBootApplication
 @ComponentScan(basePackages = ["org.example.com.ifmo.se.route.management.controllers"])
 @EntityScan(basePackages = ["org.example.com.ifmo.se.route.management.data.models"])
-open class Application : SpringBootServletInitializer()
+open class Application
 
 fun main(args: Array<String>) {
     runApplication<Application>(*args)
