@@ -60,10 +60,9 @@ val serverOpenApiSpec = "../clients/$serverName/route-management-service.yaml"
 
 tasks.register("generateServer") {
     doLast {
-        javaexec {
-            mainClass.set("-jar")
-            args = listOf(
-                "../openapi-generator-cli.jar", "generate", "-i", serverOpenApiSpec,
+        exec {
+            commandLine(
+                "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
                 "-g",
                 "kotlin-spring",
                 "-o",
@@ -74,19 +73,6 @@ tasks.register("generateServer") {
                 "--global-property=apis,models,supportingFiles,useTags"
             )
         }
-//        exec {
-//            commandLine(
-//                "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
-//                "-g",
-//                "kotlin-spring",
-//                "-o",
-//                "build/generated-server/$serverName",
-//                "--additional-properties=interfaceOnly=true",
-//                "--config", "../clients/$serverName/server/api-config.json",
-//                "--skip-validate-spec",
-//                "--global-property=apis,models,supportingFiles,useTags"
-//            )
-//        }
     }
 }
 
