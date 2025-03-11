@@ -1,3 +1,0 @@
-ssl.keystore.path=keystore.soa.keystore
-ssl.keystore.password=password
-client.route-management.url=https://route-management-service-1:8444
