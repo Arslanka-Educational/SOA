@@ -12,8 +12,8 @@ import java.io.Serializable
  */
 data class CoordinatesDto(
 
-    @get:JsonProperty("x", required = true) val x: Int,
+    @get:JsonProperty("x", required = true) var x: Int,
 
-    @get:JsonProperty("y", required = true) val y: Double
+    @get:JsonProperty("y", required = true) var y: Double
 ): Serializable
 

@@ -20,18 +20,18 @@ import java.io.Serializable
  */
 data class RouteDto(
 
-    @get:JsonProperty("id", required = true) val id: kotlin.Long,
+    @get:JsonProperty("id", required = true) var id: Long,
 
-    @get:JsonProperty("name", required = true) val name: kotlin.String,
+    @get:JsonProperty("name", required = true) val name: String,
 
-    @get:JsonProperty("coordinates", required = true) val coordinates: CoordinatesDto?,
+    @get:JsonProperty("coordinates", required = true) var coordinates: CoordinatesDto?,
 
-    @get:JsonProperty("creationDate", required = true) val creationDate: java.time.OffsetDateTime,
+    @get:JsonProperty("creationDate", required = true) var creationDate: java.time.OffsetDateTime,
 
-    @get:JsonProperty("from") val from: LocationDto? = null,
+    @get:JsonProperty("from") var from: LocationDto? = null,
 
-    @get:JsonProperty("to") val to: LocationDto? = null,
+    @get:JsonProperty("to") var to: LocationDto? = null,
 
-    @get:JsonProperty("distance") val distance: kotlin.Double? = null
+    @get:JsonProperty("distance") var distance: Double? = null
     ): Serializable
 

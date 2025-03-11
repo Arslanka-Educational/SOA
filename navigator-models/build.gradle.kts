@@ -12,6 +12,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
     implementation("jakarta.ejb:jakarta.ejb-api:4.0.1")
+    implementation("jakarta.json.bind:jakarta.json.bind-api:3.0.0")
     implementation("jakarta.annotation:jakarta.annotation-api:2.0.0")
     implementation("jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.0")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")

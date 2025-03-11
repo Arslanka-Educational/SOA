@@ -1,5 +1,4 @@
 import com.ifmo.se.navigator.dtos.*
-import com.ifmo.se.navigator.ejb.PropertiesUtil
 import jakarta.annotation.PostConstruct
 import jakarta.ejb.Remote
 import jakarta.ws.rs.client.Client

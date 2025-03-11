@@ -6,6 +6,9 @@ spring:
 server:
   port: 1516
 server.http.port: 1616
+
+service.id: ${SERVICE_ID:navigator}
+
 logging:
   level:
     root: INFO

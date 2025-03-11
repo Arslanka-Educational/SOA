@@ -1,5 +1,18 @@
 version: "3.9"
 services:
+  haproxy:
+    image: haproxy:latest
+    container_name: haproxy
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - "80:80"
+    depends_on:
+      - navigator-1
+      - navigator-2
+    networks:
+      - soa
+
   navigator-ejb:
     container_name: navigator-ejb
     build:
@@ -48,7 +61,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - soa
 

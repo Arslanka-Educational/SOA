@@ -1,7 +1,7 @@
 server:
   port: 8444
   ssl:
-    enabled: true
+    enabled: false
     key-store: classpath:soa.keystore # Хранилище ключей
     key-store-password: password # Пароль от хранилища ключей
     key-alias: soa # Псевдоним сертификата

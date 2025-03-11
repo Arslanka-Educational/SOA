@@ -1,8 +1,6 @@
 package com.ifmo.se.navigator.dtos
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.Valid
 import java.io.Serializable
 
 /**
@@ -14,11 +12,11 @@ import java.io.Serializable
  */
 data class RouteResponseDto(
 
-    @get:JsonProperty("routes") val routes: kotlin.collections.List<RouteDto>? = null,
+    @get:JsonProperty("routes") var routes: List<RouteDto>? = null,
 
-    @get:JsonProperty("total") val total: kotlin.Int? = null,
+    @get:JsonProperty("total") var total: Int? = null,
 
-    @get:JsonProperty("limit") val limit: kotlin.Int? = null,
+    @get:JsonProperty("limit") var limit: Int? = null,
 
-    @get:JsonProperty("offset") val offset: kotlin.Int? = null
+    @get:JsonProperty("offset") var offset: Int? = null
     ): Serializable

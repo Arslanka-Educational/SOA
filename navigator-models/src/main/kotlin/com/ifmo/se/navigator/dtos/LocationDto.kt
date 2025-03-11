@@ -15,14 +15,14 @@ import java.io.Serializable
  */
 data class LocationDto(
 
-    @get:JsonProperty("x", required = true) val x: kotlin.Int,
+    @get:JsonProperty("x", required = true) var x: Int,
 
-    @get:JsonProperty("z", required = true) val z: kotlin.Long,
+    @get:JsonProperty("z", required = true) var z: Long,
 
-    @get:JsonProperty("y") val y: kotlin.Int? = null,
+    @get:JsonProperty("y") var y: Int? = null,
 
-    @get:JsonProperty("name") val name: kotlin.String? = null,
+    @get:JsonProperty("name") var name: String? = null,
 
-    @get:JsonProperty("id") val id: kotlin.Int? = null
+    @get:JsonProperty("id") var id: Int? = null
     ): Serializable
 

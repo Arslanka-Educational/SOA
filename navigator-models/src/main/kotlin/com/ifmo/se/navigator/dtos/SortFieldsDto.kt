@@ -8,7 +8,7 @@ import java.io.Serializable
  *
  * Values: Id,Name,Coordinates,CreationDate,From,To,Distance,MinusId,MinusName,MinusCoordinates,MinusCreationDate,MinusFrom,MinusTo,MinusDistance
  */
-enum class SortFieldsDto(@get:JsonValue val value: kotlin.String) : Serializable {
+enum class SortFieldsDto(@get:JsonValue var value: String) : Serializable {
 
     Id("Id"),
     Name("Name"),
@@ -28,7 +28,7 @@ enum class SortFieldsDto(@get:JsonValue val value: kotlin.String) : Serializable
     companion object {
         @JvmStatic
         @JsonCreator
-        fun forValue(value: kotlin.String): SortFieldsDto {
+        fun forValue(value: String): SortFieldsDto {
             return SortFieldsDto.entries.first { it -> it.value == value }
         }
     }
