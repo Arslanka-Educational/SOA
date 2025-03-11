@@ -72,10 +72,9 @@ tasks.register("generateServer") {
 
 
         specs.forEach { (serverName, specPath) ->
-            javaexec {
-                mainClass.set("-jar")
-                args = listOf(
-                    "../openapi-generator-cli.jar", "generate", "-i", specPath,
+            exec {
+                commandLine(
+                    "openapi-generator-cli", "generate", "-i", specPath,
                     "-g",
                     "kotlin-spring",
                     "-o", "build/generated-server/$serverName",
@@ -85,18 +84,6 @@ tasks.register("generateServer") {
                     "--global-property=apis,models,useTags"
                 )
             }
-//            exec {
-//                commandLine(
-//                    "openapi-generator-cli", "generate", "-i", specPath,
-//                    "-g",
-//                    "kotlin-spring",
-//                    "-o", "build/generated-server/$serverName",
-//                    "--additional-properties=interfaceOnly=true",
-//                    "--config", "../clients/$serverName/server/api-config.json",
-//                    "--skip-validate-spec",
-//                    "--global-property=apis,models,useTags"
-//                )
-//            }
         }
     }
 }
