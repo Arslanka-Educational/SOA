@@ -22,7 +22,7 @@ open class LocationServiceImpl(
 ) : LocationService {
     private companion object : KLogging()
 
-    override suspend fun getLocationById(locationId: Long): LocationDto {
+    override fun getLocationById(locationId: Long): LocationDto {
         println("locations" + locationRepository.findAll())
         val location = locationRepository.findById(locationId).orElseThrow {
             EntityNotFoundException("Location with ID $locationId not found")
@@ -30,7 +30,7 @@ open class LocationServiceImpl(
         return location.mapToDto()
     }
 
-    override suspend fun getLocations(
+    override fun getLocations(
         limit: Int?,
         offset: Int?
     ): LocationResponseDto? {

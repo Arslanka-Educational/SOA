@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://ifmo.com/se/route-management"
+           xmlns:tns="http://ifmo.com/se/route-management"
+           elementFormDefault="qualified">
+
+    <!-- DTO для маршрута -->
+    <xs:complexType name="Route">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int" minOccurs="0"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="coordinates" type="tns:Coordinates"/>
+            <xs:element name="creationDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="from" type="tns:Location"/>
+            <xs:element name="to" type="tns:Location"/>
+            <xs:element name="distance" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для координат -->
+    <xs:complexType name="Coordinates">
+        <xs:sequence>
+            <xs:element name="x" type="xs:int"/>
+            <xs:element name="y" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для локации -->
+    <xs:complexType name="Location">
+        <xs:sequence>
+            <xs:element name="x" type="xs:int"/>
+            <xs:element name="y" type="xs:int"/>
+            <xs:element name="z" type="xs:long"/>
+            <xs:element name="name" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Запрос на получение маршрутов -->
+    <xs:element name="GetRoutesRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="limit" type="xs:int" minOccurs="0"/>
+                <xs:element name="offset" type="xs:int" minOccurs="0"/>
+                <xs:element name="sortBy" type="tns:SortFields" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="filter" type="tns:GetRoutesFilterParameter" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Ответ с маршрутами -->
+    <xs:element name="GetRoutesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routes" type="tns:Route" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="total" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Параметры фильтрации -->
+    <xs:complexType name="GetRoutesFilterParameter">
+        <xs:sequence>
+            <xs:element name="locationIdFrom" type="xs:int" minOccurs="0"/>
+            <xs:element name="locationIdTo" type="xs:int" minOccurs="0"/>
+            <xs:element name="minId" type="xs:int" minOccurs="0"/>
+            <xs:element name="maxId" type="xs:int" minOccurs="0"/>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="minX" type="xs:int" minOccurs="0"/>
+            <xs:element name="maxX" type="xs:int" minOccurs="0"/>
+            <xs:element name="minY" type="xs:double" minOccurs="0"/>
+            <xs:element name="maxY" type="xs:double" minOccurs="0"/>
+            <xs:element name="minCreationDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="maxCreationDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="fromLocationX" type="xs:int" minOccurs="0"/>
+            <xs:element name="toLocationX" type="xs:int" minOccurs="0"/>
+            <xs:element name="fromLocationY" type="xs:int" minOccurs="0"/>
+            <xs:element name="toLocationY" type="xs:int" minOccurs="0"/>
+            <xs:element name="fromLocationZ" type="xs:long" minOccurs="0"/>
+            <xs:element name="toLocationZ" type="xs:long" minOccurs="0"/>
+            <xs:element name="distance" type="xs:double" minOccurs="0"/>
+            <xs:element name="nameStartsWithSubstr" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Поля сортировки -->
+    <xs:simpleType name="SortFields">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Id"/>
+            <xs:enumeration value="Name"/>
+            <xs:enumeration value="Coordinates"/>
+            <xs:enumeration value="CreationDate"/>
+            <xs:enumeration value="From"/>
+            <xs:enumeration value="To"/>
+            <xs:enumeration value="Distance"/>
+            <xs:enumeration value="-Id"/>
+            <xs:enumeration value="-Name"/>
+            <xs:enumeration value="-Coordinates"/>
+            <xs:enumeration value="-CreationDate"/>
+            <xs:enumeration value="-From"/>
+            <xs:enumeration value="-To"/>
+            <xs:enumeration value="-Distance"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

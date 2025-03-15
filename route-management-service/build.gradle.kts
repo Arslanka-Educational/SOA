@@ -35,6 +35,9 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.22.0")
     implementation("org.apache.logging.log4j:log4j-core:2.22.0")
     implementation("org.apache.logging.log4j:log4j-api:2.22.0")
+    implementation("org.springframework.ws:spring-ws-core:4.0.11")
+    implementation("org.apache.cxf:cxf-spring-boot-starter-jaxws:4.0.5")
+
 
 }
 tasks.test {
@@ -71,6 +74,23 @@ tasks.register("generateServer") {
                 "--config", "../clients/$serverName/server/api-config.json",
                 "--skip-validate-spec",
                 "--global-property=apis,models,supportingFiles,useTags"
+            )
+        }
+    }
+}
+
+tasks.register("generateJaxb") {
+    val generatedSources = file("$buildDir/generated-sources/jaxb")
+    outputs.dir(generatedSources)
+
+    doLast {
+        generatedSources.mkdirs()
+        exec {
+            commandLine(
+                "xjc",
+                "-d", generatedSources.path,
+                "-p", "com.ifmo.se.routes.generated",
+                "src/main/resources/schema.xsd"
             )
         }
     }

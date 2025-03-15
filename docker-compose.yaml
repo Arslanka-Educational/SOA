@@ -73,6 +73,8 @@ services:
     command: [ "java", "-jar", "route-management-service-1.jar" ]
     ports:
       - "8444:8444"
+    depends_on:
+      - postgres
     environment:
       SERVICE_ID: route-management-service-1
     networks:
