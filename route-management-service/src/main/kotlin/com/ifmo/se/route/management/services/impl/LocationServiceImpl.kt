@@ -1,12 +1,11 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.LocationResponseDto
+import com.ifmo.se.route.management.wsdl.LocationDto
+import com.ifmo.se.route.management.wsdl.LocationResponseDto
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
 import mapToDto
 import mu.KLogging
-//import org.example.com.ifmo.se.route.management.data.mappers.LocationMapper
 import org.example.com.ifmo.se.route.management.data.mappers.toResponse
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.repositories.LocationRepository

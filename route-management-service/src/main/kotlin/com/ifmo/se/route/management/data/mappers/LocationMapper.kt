@@ -1,11 +1,11 @@
-import generated.com.ifmo.se.route.dto.LocationDto
+import com.ifmo.se.route.management.wsdl.LocationDto
 import org.example.com.ifmo.se.route.management.data.models.Location
 
 
-internal fun Location.mapToDto() = LocationDto(
-    x = this.x,
-    y = this.y,
-    z = this.z,
-    id = this.id?.toInt(),
-    name = this.name
-)
+internal fun Location.mapToDto() = LocationDto().apply {
+    this.id = this@mapToDto.id!!.toInt()
+    this.x = this@mapToDto.x
+    this.y = this@mapToDto.y!!
+    this.z = this@mapToDto.z
+    this.name = this@mapToDto.name
+}

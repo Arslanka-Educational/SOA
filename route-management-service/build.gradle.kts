@@ -2,7 +2,6 @@ plugins {
     kotlin("jvm") version "1.9.23"
     id("org.springframework.boot") version "3.2.0"
     id("io.spring.dependency-management") version "1.1.3"
-    id("org.openapi.generator") version "7.0.0"
     kotlin("plugin.jpa") version "1.9.22"
 }
 
@@ -17,8 +16,6 @@ repositories {
 dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("io.swagger.core.v3:swagger-annotations:2.2.8")
-    implementation("io.swagger.core.v3:swagger-models:2.2.8")
     implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("io.github.microutils:kotlin-logging-jvm:3.0.5")
@@ -37,8 +34,13 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.22.0")
     implementation("org.springframework.ws:spring-ws-core:4.0.11")
     implementation("org.apache.cxf:cxf-spring-boot-starter-jaxws:4.0.5")
-
-
+    implementation("org.springframework.boot:spring-boot-starter-web-services")
+    implementation("javax.xml.bind:jaxb-api:2.3.1")
+    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.4")
+    implementation("javax.activation:activation:1.1.1")
+    runtimeOnly("com.sun.xml.bind:jaxb-core")
+    runtimeOnly("com.sun.xml.bind:jaxb-impl")
+    runtimeOnly("com.sun.xml.messaging.saaj:saaj-impl")
 }
 tasks.test {
     useJUnitPlatform()
@@ -58,29 +60,12 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-val serverName = "route-management-service-api"
-val serverOpenApiSpec = "../clients/$serverName/route-management-service.yaml"
-
-tasks.register("generateServer") {
-    doLast {
-        exec {
-            commandLine(
-                "openapi-generator-cli", "generate", "-i", serverOpenApiSpec,
-                "-g",
-                "kotlin-spring",
-                "-o",
-                "build/generated-server/$serverName",
-                "--additional-properties=interfaceOnly=true",
-                "--config", "../clients/$serverName/server/api-config.json",
-                "--skip-validate-spec",
-                "--global-property=apis,models,supportingFiles,useTags"
-            )
-        }
-    }
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.register("generateJaxb") {
-    val generatedSources = file("$buildDir/generated-sources/jaxb")
+    val generatedSources = file("build/generated-sources")
     outputs.dir(generatedSources)
 
     doLast {
@@ -89,8 +74,8 @@ tasks.register("generateJaxb") {
             commandLine(
                 "xjc",
                 "-d", generatedSources.path,
-                "-p", "com.ifmo.se.routes.generated",
-                "src/main/resources/schema.xsd"
+                "-p", "com.ifmo.se.route.management.wsdl",
+                "src/main/resources/wsdl/schema.xsd"
             )
         }
     }
@@ -98,16 +83,16 @@ tasks.register("generateJaxb") {
 
 sourceSets {
     main {
-        kotlin {
-            srcDir("build/generated-server")
+        java {
+            srcDir("build/generated-sources")
         }
     }
 }
 
 tasks.named("compileKotlin") {
-    dependsOn("generateServer")
+    dependsOn("generateJaxb")
 }
 
 tasks.named("compileJava") {
-    dependsOn("generateServer")
+    dependsOn("generateJaxb")
 }

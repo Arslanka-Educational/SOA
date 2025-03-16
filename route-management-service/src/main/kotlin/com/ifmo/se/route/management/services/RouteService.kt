@@ -1,6 +1,11 @@
 package org.example.com.ifmo.se.route.management.services
 
-import generated.com.ifmo.se.route.dto.*
+import com.ifmo.se.route.management.wsdl.GetRoutesFilterParameterDto
+import com.ifmo.se.route.management.wsdl.RouteDto
+import com.ifmo.se.route.management.wsdl.RouteResponseDto
+import com.ifmo.se.route.management.wsdl.RouteUpsertRequestDto
+import org.example.com.ifmo.se.route.management.data.models.SortFieldsDto
+
 
 interface RouteService {
     fun getPaginatedFilteredRoutes(

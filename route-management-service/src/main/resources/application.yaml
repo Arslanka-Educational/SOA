@@ -11,11 +11,10 @@ server:
   http:
     port: 8080
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: route-management
-  ws:
-    wsdl:
-      location: /ws/route-management?wsdl
   datasource:
     url: jdbc:postgresql://postgres:5432/postgres
     username: postgres
@@ -32,3 +31,5 @@ logging:
     org:
       hibernate:
         SQL=DEBUG:
+      springframework:
+        ws=DEBUG:

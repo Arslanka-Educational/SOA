@@ -1,15 +1,20 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
-import generated.com.ifmo.se.route.dto.*
+import com.ifmo.se.route.management.wsdl.GetRoutesFilterParameterDto
+import com.ifmo.se.route.management.wsdl.RouteDto
+import com.ifmo.se.route.management.wsdl.RouteResponseDto
+import com.ifmo.se.route.management.wsdl.RouteUpsertRequestDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
 import mu.KLogging
 import org.example.com.ifmo.se.route.management.data.mappers.mapToDto
 import org.example.com.ifmo.se.route.management.data.mappers.mapToEntity
+import org.example.com.ifmo.se.route.management.data.mappers.xmlGregorianCalendarToOffsetDateTime
 import org.example.com.ifmo.se.route.management.data.models.Coordinates
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.models.Route
+import org.example.com.ifmo.se.route.management.data.models.SortFieldsDto
 import org.example.com.ifmo.se.route.management.data.repositories.LocationRepository
 import org.example.com.ifmo.se.route.management.data.repositories.RouteRepository
 import org.example.com.ifmo.se.route.management.services.RouteService
@@ -33,28 +38,34 @@ open class RouteServiceImpl(
         limit: Int?,
         sortBy: List<SortFieldsDto>?,
     ): RouteResponseDto {
-        val routes = routeRepository.findRoutesWithFiltersAndSort(filter, offset = offset, limit = limit, sortBy)
+        val routes = routeRepository.findRoutesWithFiltersAndSort(
+            filter = filter,
+            offset = offset,
+            limit = limit,
+            sortBy = sortBy
+        )
         logger.info { routes.toString() }
         val total = routes.count()
 
-        return RouteResponseDto(
-            routes = routes.map { it.mapToDto() },
-            total = total,
-            limit = limit ?: 10,
-            offset = offset ?: 0
-        )
+        return RouteResponseDto().apply {
+            this.total = total
+            this.limit = limit ?: 10
+            this.offset = offset ?: 0
+        }.also {
+            it.routes.addAll(routes.map { it.mapToDto() })
+        }
     }
 
     @Transactional
     override fun save(routeDto: RouteUpsertRequestDto): RouteDto {
-        val fromLocation = locationRepository.findById(routeDto.from!!.id!!.toLong())
+        val fromLocation = locationRepository.findById(routeDto.from!!.id.toLong())
             .orElseGet {
                 // Create and save a new Location entity if it doesn't exist
                 val newLocation = routeDto.from.mapToEntity()
                 entityManager.merge(newLocation)
             }
 
-        val toLocation = locationRepository.findById(routeDto.to!!.id!!.toLong())
+        val toLocation = locationRepository.findById(routeDto.to!!.id.toLong())
             .orElseGet {
                 // Create and save a new Location entity if it doesn't exist
                 val newLocation = routeDto.to.mapToEntity()
@@ -71,7 +82,7 @@ open class RouteServiceImpl(
         )
 
         val savedRoute = entityManager.merge(route)
-        return savedRoute.mapToDto().also { it.creationDate.toOffsetTime() }
+        return savedRoute.mapToDto()
     }
 
     @Transactional
