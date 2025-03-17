@@ -1,32 +1,48 @@
 package org.example.com.ifmo.se.route.management.controllers
 
-import generated.com.ifmo.se.route.api.LocationsApi
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.LocationResponseDto
-import kotlinx.coroutines.runBlocking
-import lombok.RequiredArgsConstructor
+import com.ifmo.se.route_management.GetLocationByIdRequest
+import com.ifmo.se.route_management.GetLocationByIdResponse
+import com.ifmo.se.route_management.GetLocationsRequest
+import com.ifmo.se.route_management.GetLocationsResponse
+import com.ifmo.se.route_management.LocationDto
+import com.ifmo.se.route_management.LocationResponseDto
+import com.ifmo.se.route_management.PostRouteRequest
+import jakarta.jws.WebMethod
+import jakarta.jws.WebParam
+import mu.KLogging
 import org.example.com.ifmo.se.route.management.services.LocationService
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.ws.server.endpoint.annotation.Endpoint
+import org.springframework.ws.server.endpoint.annotation.PayloadRoot
+import org.springframework.ws.server.endpoint.annotation.RequestPayload
+import org.springframework.ws.server.endpoint.annotation.ResponsePayload
 
-@RequiredArgsConstructor
-@RestController
-open class LocationsController(
+@Endpoint
+class LocationsController(
     private val locationService: LocationService,
-) : LocationsApi {
-    override fun getLocationById(id: Long): ResponseEntity<LocationDto> = runBlocking {
-        ResponseEntity.ok(locationService.getLocationById(id))
+) {
+    private companion object : KLogging()
+
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getLocationById")
+    @ResponsePayload
+    fun getLocationById(
+        @RequestPayload request: GetLocationByIdRequest,
+    ): GetLocationByIdResponse = locationService.getLocationById(request.id).let {
+        GetLocationByIdResponse().apply {
+            this.location = let@ it
+        }
     }
 
-    override fun getLocations(
-        limit: Int?,
-        offset: Int?
-    ): ResponseEntity<LocationResponseDto> = runBlocking {
-        ResponseEntity.ok(
-            locationService.getLocations(
-                limit = limit,
-                offset = offset
-            )
-        )
-    }
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getLocations")
+    @ResponsePayload
+    fun getLocations(
+        @RequestPayload request: GetLocationsRequest,
+    ): GetLocationsResponse =
+        locationService.getLocations(
+            limit = request.limit,
+            offset = request.offset,
+        ).let {
+            GetLocationsResponse().apply {
+                this.locations = let@ it
+            }
+        }
 }

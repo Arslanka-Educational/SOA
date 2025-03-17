@@ -1,11 +1,10 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.LocationResponseDto
+import com.ifmo.se.route_management.LocationDto
+import com.ifmo.se.route_management.LocationResponseDto
 import jakarta.persistence.EntityNotFoundException
-import lombok.RequiredArgsConstructor
+import mapToDto
 import mu.KLogging
-import org.example.com.ifmo.se.route.management.data.mappers.LocationMapper
 import org.example.com.ifmo.se.route.management.data.mappers.toResponse
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.repositories.LocationRepository
@@ -15,22 +14,20 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
-@RequiredArgsConstructor
-open class LocationServiceImpl(
+class LocationServiceImpl(
     private val locationRepository: LocationRepository,
-    private val locationMapper: LocationMapper,
 ) : LocationService {
     private companion object : KLogging()
 
-    override suspend fun getLocationById(locationId: Long): LocationDto {
+    override fun getLocationById(locationId: Long): LocationDto {
         println("locations" + locationRepository.findAll())
         val location = locationRepository.findById(locationId).orElseThrow {
             EntityNotFoundException("Location with ID $locationId not found")
         }
-        return locationMapper.map(location)
+        return location.mapToDto()
     }
 
-    override suspend fun getLocations(
+    override fun getLocations(
         limit: Int?,
         offset: Int?
     ): LocationResponseDto? {
@@ -41,7 +38,6 @@ open class LocationServiceImpl(
             PageRequest.of(page, limit ?: 10)
         )
 
-        return locations.toResponse(locationMapper)
+        return locations.toResponse()
     }
-
 }

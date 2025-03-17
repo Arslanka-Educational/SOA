@@ -1,19 +1,22 @@
 server:
   port: 8444
   ssl:
-    enabled: true
+    enabled: false
     key-store: classpath:soa.keystore # Хранилище ключей
     key-store-password: password # Пароль от хранилища ключей
     key-alias: soa # Псевдоним сертификата
     key-password: password # Пароль от ключа
     trust-store: classpath:soa.truststore # Хранилище доверенных сертификатов
     trust-store-password: password # Пароль от truststore
-
+  http:
+    port: 8080
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: route-management
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://postgres:5432/postgres
     username: postgres
     password: postgres
   jpa:
@@ -28,3 +31,5 @@ logging:
     org:
       hibernate:
         SQL=DEBUG:
+      springframework:
+        ws=DEBUG:

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://ifmo.com/se/route-management"
+           xmlns:tns="http://ifmo.com/se/route-management"
+           elementFormDefault="qualified">
+
+    <!-- DTO для маршрута -->
+    <xs:complexType name="RouteDto">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int" minOccurs="0"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="coordinates" type="tns:CoordinatesDto"/>
+            <xs:element name="creationDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="from" type="tns:LocationDto"/>
+            <xs:element name="to" type="tns:LocationDto"/>
+            <xs:element name="distance" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для координат -->
+    <xs:complexType name="CoordinatesDto">
+        <xs:sequence>
+            <xs:element name="x" type="xs:int"/>
+            <xs:element name="y" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для локации -->
+    <xs:complexType name="LocationDto">
+        <xs:sequence>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="x" type="xs:int"/>
+            <xs:element name="y" type="xs:int"/>
+            <xs:element name="z" type="xs:long"/>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для ответа с локациями -->
+    <xs:complexType name="LocationResponseDto">
+        <xs:sequence>
+            <xs:element name="locations" type="tns:LocationDto" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="total" type="xs:int"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для ответа с маршрутами -->
+    <xs:complexType name="RouteResponseDto">
+        <xs:sequence>
+            <xs:element name="routes" type="tns:RouteDto" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="total" type="xs:int"/>
+            <xs:element name="limit" type="xs:int" minOccurs="0"/>
+            <xs:element name="offset" type="xs:int" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для фильтрации -->
+    <xs:complexType name="GetRoutesFilterParameterDto">
+        <xs:sequence>
+            <xs:element name="locationIdFrom" type="xs:int" minOccurs="0"/>
+            <xs:element name="locationIdTo" type="xs:int" minOccurs="0"/>
+            <xs:element name="minId" type="xs:int" minOccurs="0"/>
+            <xs:element name="maxId" type="xs:int" minOccurs="0"/>
+            <xs:element name="name" type="xs:string" minOccurs="0"/>
+            <xs:element name="minX" type="xs:int" minOccurs="0"/>
+            <xs:element name="maxX" type="xs:int" minOccurs="0"/>
+            <xs:element name="minY" type="xs:double" minOccurs="0"/>
+            <xs:element name="maxY" type="xs:double" minOccurs="0"/>
+            <xs:element name="minCreationDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="maxCreationDate" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="fromLocationX" type="xs:int" minOccurs="0"/>
+            <xs:element name="toLocationX" type="xs:int" minOccurs="0"/>
+            <xs:element name="fromLocationY" type="xs:int" minOccurs="0"/>
+            <xs:element name="toLocationY" type="xs:int" minOccurs="0"/>
+            <xs:element name="fromLocationZ" type="xs:long" minOccurs="0"/>
+            <xs:element name="toLocationZ" type="xs:long" minOccurs="0"/>
+            <xs:element name="distance" type="xs:double" minOccurs="0"/>
+            <xs:element name="nameStartsWithSubstr" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для сортировки -->
+    <xs:simpleType name="SortFieldsDto">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Id"/>
+            <xs:enumeration value="Name"/>
+            <xs:enumeration value="Coordinates"/>
+            <xs:enumeration value="CreationDate"/>
+            <xs:enumeration value="From"/>
+            <xs:enumeration value="To"/>
+            <xs:enumeration value="Distance"/>
+            <xs:enumeration value="-Id"/>
+            <xs:enumeration value="-Name"/>
+            <xs:enumeration value="-Coordinates"/>
+            <xs:enumeration value="-CreationDate"/>
+            <xs:enumeration value="-From"/>
+            <xs:enumeration value="-To"/>
+            <xs:enumeration value="-Distance"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- DTO для запроса на получение маршрутов -->
+    <xs:element name="GetRoutesRequestDto">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="limit" type="xs:int" minOccurs="0"/>
+                <xs:element name="offset" type="xs:int" minOccurs="0"/>
+                <xs:element name="sortBy" type="tns:SortFieldsDto" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="filter" type="tns:GetRoutesFilterParameterDto" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- DTO для ответа с маршрутами -->
+    <xs:element name="GetRoutesResponseDto">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routes" type="tns:RouteDto" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="total" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- DTO для добавления маршрута -->
+    <xs:complexType name="RouteAddRequestDto">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="coordinates" type="tns:CoordinatesDto"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- DTO для обновления маршрута -->
+    <xs:complexType name="RouteUpsertRequestDto">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="coordinates" type="tns:CoordinatesDto"/>
+            <xs:element name="from" type="tns:LocationDto"/>
+            <xs:element name="to" type="tns:LocationDto"/>
+            <xs:element name="distance" type="xs:double"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getRoutesCountsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="maxDistance" type="xs:double" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRoutesCountsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="count" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRoutesRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="filterParams" type="tns:GetRoutesFilterParameterDto" minOccurs="0"/>
+                <xs:element name="limit" type="xs:int" minOccurs="0"/>
+                <xs:element name="offset" type="xs:int" minOccurs="0"/>
+                <xs:element name="sortBy" type="tns:SortFieldsDto" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRoutesResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="routes" type="tns:RouteDto" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="total" type="xs:int"/>
+                <xs:element name="limit" type="xs:int" minOccurs="0"/>
+                <xs:element name="offset" type="xs:int" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="postRouteRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="route" type="tns:RouteUpsertRequestDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="postRouteResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="route" type="tns:RouteDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteRouteByDistanceRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="distance" type="xs:double"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteRouteByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRouteByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteRouteByDistanceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="route" type="tns:RouteDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="deleteRouteByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="route" type="tns:RouteDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getRouteByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="route" type="tns:RouteDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="updateRouteByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="route" type="tns:RouteUpsertRequestDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="updateRouteByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="route" type="tns:RouteDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLocationByIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLocationByIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="location" type="tns:LocationDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLocationsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="limit" type="xs:int" minOccurs="0"/>
+                <xs:element name="offset" type="xs:int" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getLocationsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="locations" type="tns:LocationResponseDto"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

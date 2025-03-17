@@ -1,12 +1,12 @@
 package org.example.com.ifmo.se.route.management.data.repositories.impl
 
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.SortFieldsDto
+import com.ifmo.se.route_management.GetRoutesFilterParameterDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.persistence.TypedQuery
 import mu.KLogging
 import org.example.com.ifmo.se.route.management.data.models.Route
+import org.example.com.ifmo.se.route.management.data.models.SortFieldsDto
 import org.example.com.ifmo.se.route.management.data.repositories.CustomRouteRepository
 import org.springframework.stereotype.Repository
 
@@ -119,8 +119,8 @@ open class CustomRouteRepositoryImpl : CustomRouteRepository {
 
         queryBuilder.append(" ORDER BY ")
         sortBy.forEachIndexed { index, field ->
-            val direction = if (field.value.startsWith("-")) "DESC" else "ASC"
-            val fieldName = when (field.value.replace("-", "")) {
+            val direction = if (field.value().startsWith("-")) "DESC" else "ASC"
+            val fieldName = when (field.value().replace("-", "")) {
                 "Id" -> "r.id"
                 "Name" -> "r.name"
                 "Coordinates" -> "r.coordinates.x, r.coordinates.y"

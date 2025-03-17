@@ -1,10 +1,10 @@
 package org.example.com.ifmo.se.route.management.services
 
-import generated.com.ifmo.se.route.dto.LocationDto
-import generated.com.ifmo.se.route.dto.LocationResponseDto
+import com.ifmo.se.route_management.LocationDto
+import com.ifmo.se.route_management.LocationResponseDto
+
 
 interface LocationService {
-    suspend fun getLocationById(locationId: Long): LocationDto?
-
-    suspend fun getLocations(limit: Int?, offset: Int?): LocationResponseDto?
+    fun getLocationById(locationId: Long): LocationDto?
+    fun getLocations(limit: Int?, offset: Int?): LocationResponseDto?
 }

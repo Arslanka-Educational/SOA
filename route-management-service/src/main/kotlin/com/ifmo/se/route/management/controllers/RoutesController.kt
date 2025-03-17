@@ -1,59 +1,123 @@
 package org.example.com.ifmo.se.route.management.controllers
 
-import generated.com.ifmo.se.route.api.RoutesApi
-import generated.com.ifmo.se.route.dto.*
-import lombok.RequiredArgsConstructor
+import com.ifmo.se.route_management.DeleteRouteByDistanceRequest
+import com.ifmo.se.route_management.DeleteRouteByDistanceResponse
+import com.ifmo.se.route_management.DeleteRouteByIdRequest
+import com.ifmo.se.route_management.DeleteRouteByIdResponse
+import com.ifmo.se.route_management.GetRouteByIdRequest
+import com.ifmo.se.route_management.GetRouteByIdResponse
+import com.ifmo.se.route_management.GetRoutesCountsRequest
+import com.ifmo.se.route_management.GetRoutesCountsResponse
+import com.ifmo.se.route_management.GetRoutesRequest
+import com.ifmo.se.route_management.GetRoutesRequestDto
+import com.ifmo.se.route_management.GetRoutesResponseDto
+import com.ifmo.se.route_management.PostRouteRequest
+import com.ifmo.se.route_management.PostRouteResponse
+import com.ifmo.se.route_management.UpdateRouteByIdRequest
+import com.ifmo.se.route_management.UpdateRouteByIdResponse
 import mu.KLogging
+import org.example.com.ifmo.se.route.management.data.models.SortFieldsDto
 import org.example.com.ifmo.se.route.management.services.RouteService
-import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.RestController
-import java.math.BigDecimal
+import org.springframework.data.domain.Sort
+import org.springframework.stereotype.Component
+import org.springframework.ws.server.endpoint.annotation.Endpoint
+import org.springframework.ws.server.endpoint.annotation.PayloadRoot
+import org.springframework.ws.server.endpoint.annotation.RequestPayload
+import org.springframework.ws.server.endpoint.annotation.ResponsePayload
 
-@RequiredArgsConstructor
-@RestController
-open class RoutesController(
+@Endpoint
+@Component
+class RoutesController(
     private val routeService: RouteService,
-) : RoutesApi {
+) {
     private companion object : KLogging()
 
-    override fun deleteRouteByDistance(distance: Double): ResponseEntity<RouteDto> {
-        return ResponseEntity.ok(routeService.deleteRouteByDistance(distance = distance))
-    }
-
-    override fun deleteRouteById(id: Int, distance: BigDecimal?): ResponseEntity<RouteDto> {
-        return ResponseEntity.ok(routeService.deleteRouteById(id))
-    }
-
-    override fun getRouteById(id: Int): ResponseEntity<RouteDto> {
-        return ResponseEntity.ok(routeService.getById(id))
-    }
-
-    override fun getRoutes(
-        limit: Int?,
-        offset: Int?,
-        sortBy: List<SortFieldsDto>?,
-        getRoutesFilterParameter: GetRoutesFilterParameterDto?
-    ): ResponseEntity<RouteResponseDto> {
-        logger.info {
-            """
-            limit: $limit
-            offset: $offset
-            sortBy: $sortBy
-            filter: $getRoutesFilterParameter
-        """.trimIndent()
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "deleteRouteByDistance")
+    @ResponsePayload
+    fun deleteRouteByDistance(
+        @RequestPayload request: DeleteRouteByDistanceRequest,
+    ): DeleteRouteByDistanceResponse {
+        return routeService.deleteRouteByDistance(distance = request.distance).let {
+            DeleteRouteByDistanceResponse().apply {
+                this.route = let@ it
+            }
         }
-        return ResponseEntity.ok(routeService.getPaginatedFilteredRoutes(getRoutesFilterParameter, offset, limit, sortBy))
     }
 
-    override fun getRoutesCounts(maxDistance: Double?): ResponseEntity<Int> {
-        return ResponseEntity.ok(routeService.getRoutesCountByDistance(maxDistance))
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "deleteRouteById")
+    @ResponsePayload
+    fun deleteRouteById(
+        @RequestPayload request: DeleteRouteByIdRequest,
+    ): DeleteRouteByIdResponse {
+        return routeService.deleteRouteById(request.id).let {
+            DeleteRouteByIdResponse().apply {
+                this.route = let@ it
+            }
+        }
     }
 
-    override fun postRoute(routeUpsertRequestDto: RouteUpsertRequestDto): ResponseEntity<RouteDto> {
-        return ResponseEntity.ok(routeService.save(routeUpsertRequestDto))
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getRouteById")
+    @ResponsePayload
+    fun getRouteById(
+        @RequestPayload request: GetRouteByIdRequest,
+    ): GetRouteByIdResponse {
+        return routeService.getById(request.id).let {
+            GetRouteByIdResponse().apply {
+                this.route = let@ it
+            }
+        }
     }
 
-    override fun updateRouteById(id: Int, routeUpsertRequestDto: RouteUpsertRequestDto): ResponseEntity<RouteDto> {
-        return ResponseEntity.ok(routeService.updateRoute(id, routeUpsertRequestDto))
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getRoutes")
+    @ResponsePayload
+    fun getRoutes(
+        @RequestPayload request: GetRoutesRequest,
+    ): GetRoutesResponseDto {
+        return routeService.getPaginatedFilteredRoutes(
+            filter = request.filterParams,
+            offset = request.offset,
+            limit = request.limit,
+            sortBy = request.sortBy.map { SortFieldsDto.valueOf(it) },
+        ).let {
+            GetRoutesResponseDto().apply {
+                this.total = let@ total
+            }.also {
+                it.routes.addAll(let@ it.routes)
+            }
+        }
+    }
+
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getRoutesCountsRequest")
+    @ResponsePayload
+    fun getRoutesCounts(
+        @RequestPayload request: GetRoutesCountsRequest
+    ): GetRoutesCountsResponse {
+        return GetRoutesCountsResponse().apply {
+            this.count = routeService.getRoutesCountByDistance(request.maxDistance)
+        }
+    }
+
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "postRoute")
+    @ResponsePayload
+    fun postRoute(
+        @RequestPayload request: PostRouteRequest
+    ): PostRouteResponse {
+        return routeService.save(request.route).let {
+            PostRouteResponse().apply {
+                this.route = let@ it
+            }
+        }
+    }
+
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "updateRouteById")
+    @ResponsePayload
+    fun updateRouteById(
+        @RequestPayload request: UpdateRouteByIdRequest,
+    ): UpdateRouteByIdResponse {
+        return routeService.updateRoute(routeId = request.id.toInt(), routeDto = request.route).let {
+            UpdateRouteByIdResponse().apply {
+                this.route = let@ it
+            }
+        }
     }
 }

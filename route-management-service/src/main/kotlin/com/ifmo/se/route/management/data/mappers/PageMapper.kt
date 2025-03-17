@@ -1,10 +1,12 @@
 package org.example.com.ifmo.se.route.management.data.mappers
 
-import generated.com.ifmo.se.route.dto.LocationResponseDto
+import com.ifmo.se.route_management.LocationResponseDto
+import mapToDto
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.springframework.data.domain.Page
 
-internal fun Page<Location>.toResponse(locationMapper: LocationMapper) = LocationResponseDto(
-    total = totalElements.toInt(),
-    locations = content.toList().map { locationMapper.map(it) }
-)
+internal fun Page<Location>.toResponse() = LocationResponseDto().apply {
+    this.total = totalElements.toInt()
+}.also {
+    it.locations.addAll(content.toList().map { it.mapToDto() })
+}

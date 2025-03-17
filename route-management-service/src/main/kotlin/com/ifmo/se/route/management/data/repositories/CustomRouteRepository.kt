@@ -1,8 +1,8 @@
 package org.example.com.ifmo.se.route.management.data.repositories
 
-import generated.com.ifmo.se.route.dto.GetRoutesFilterParameterDto
-import generated.com.ifmo.se.route.dto.SortFieldsDto
+import com.ifmo.se.route_management.GetRoutesFilterParameterDto
 import org.example.com.ifmo.se.route.management.data.models.Route
+import org.example.com.ifmo.se.route.management.data.models.SortFieldsDto
 
 interface CustomRouteRepository {
     fun findRoutesWithFiltersAndSort(
