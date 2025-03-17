@@ -1,6 +1,6 @@
 package org.example.com.ifmo.se.route.management.data.repositories.specifications
 
-import com.ifmo.se.route.management.wsdl.GetRoutesFilterParameterDto
+import com.ifmo.se.route_management.GetRoutesFilterParameterDto
 import org.springframework.data.jpa.domain.Specification
 import jakarta.persistence.criteria.Predicate
 import org.example.com.ifmo.se.route.management.data.mappers.xmlGregorianCalendarToOffsetDateTime

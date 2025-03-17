@@ -1,4 +1,4 @@
-import com.ifmo.se.route.management.wsdl.LocationDto
+import com.ifmo.se.route_management.LocationDto
 import org.example.com.ifmo.se.route.management.data.models.Location
 
 

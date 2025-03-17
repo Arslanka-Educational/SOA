@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.client.RestTemplate
 
 @Configuration
-open class ApplicationConfig {
+class ApplicationConfig {
     @Bean
-    open fun restTemplate(builder: RestTemplateBuilder): RestTemplate {
+    fun restTemplate(builder: RestTemplateBuilder): RestTemplate {
         return builder.build()
     }
 
     @Bean
-    open fun servletContainer(@Value("\${server.http.port}") httpPort: Int): ServletWebServerFactory {
+    fun servletContainer(@Value("\${server.http.port}") httpPort: Int): ServletWebServerFactory {
         val connector = Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL)
         connector.port = httpPort
 

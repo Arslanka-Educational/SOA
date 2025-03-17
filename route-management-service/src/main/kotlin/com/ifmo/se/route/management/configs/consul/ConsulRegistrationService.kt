@@ -10,15 +10,10 @@ import org.springframework.web.util.DefaultUriBuilderFactory
 
 
 @Service
-open class ConsulRegistrationService(
+class ConsulRegistrationService(
     private val restTemplate: RestTemplate,
 ) {
     private companion object : KLogging()
-//
-//    private lateinit var sslContext: SSLContext
-//
-//    @Value("\${server.ssl.key-store-password}")
-//    private lateinit var trustStorePassword: String
 
     private val consulUrl = "http://consul-server:8500"
 
@@ -56,27 +51,4 @@ open class ConsulRegistrationService(
             logger.info("Exception while registering service: ${ex.message}")
         }
     }
-
-//
-//    @Bean
-//    open fun restTemplate(
-//        @Value("\${server.ssl.trust-store}") trustStore: Resource,
-//    ): RestTemplate? {
-//        val sslContext: SSLContext = SSLContextBuilder()
-//            .loadTrustMaterial(trustStore.url, trustStorePassword.toCharArray()).build()
-//
-//        val sslConFactory = SSLConnectionSocketFactory(
-//            sslContext,
-//            NoopHostnameVerifier.INSTANCE // Игнорируем проверку имени хоста
-//        )
-//        val cm: HttpClientConnectionManager = PoolingHttpClientConnectionManagerBuilder.create()
-//            .setSSLSocketFactory(sslConFactory)
-//            .build()
-//
-//        val httpClient: CloseableHttpClient = HttpClients.custom().setConnectionManager(cm).build()
-//        val requestFactory: ClientHttpRequestFactory = HttpComponentsClientHttpRequestFactory(httpClient)
-//
-//        restTemplate = RestTemplate(requestFactory)
-//        return restTemplate;
-//    }
 }

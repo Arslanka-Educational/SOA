@@ -1,6 +1,6 @@
 package org.example.com.ifmo.se.route.management.data.mappers
 
-import com.ifmo.se.route.management.wsdl.LocationResponseDto
+import com.ifmo.se.route_management.LocationResponseDto
 import mapToDto
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.springframework.data.domain.Page

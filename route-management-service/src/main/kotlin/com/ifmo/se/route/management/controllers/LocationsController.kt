@@ -1,39 +1,48 @@
 package org.example.com.ifmo.se.route.management.controllers
 
-import com.ifmo.se.route.management.wsdl.LocationDto
-import com.ifmo.se.route.management.wsdl.LocationResponseDto
+import com.ifmo.se.route_management.GetLocationByIdRequest
+import com.ifmo.se.route_management.GetLocationByIdResponse
+import com.ifmo.se.route_management.GetLocationsRequest
+import com.ifmo.se.route_management.GetLocationsResponse
+import com.ifmo.se.route_management.LocationDto
+import com.ifmo.se.route_management.LocationResponseDto
+import com.ifmo.se.route_management.PostRouteRequest
 import jakarta.jws.WebMethod
 import jakarta.jws.WebParam
-import jakarta.jws.WebService
-import lombok.RequiredArgsConstructor
 import mu.KLogging
 import org.example.com.ifmo.se.route.management.services.LocationService
-import org.springframework.http.ResponseEntity
-import org.springframework.stereotype.Controller
+import org.springframework.ws.server.endpoint.annotation.Endpoint
+import org.springframework.ws.server.endpoint.annotation.PayloadRoot
+import org.springframework.ws.server.endpoint.annotation.RequestPayload
+import org.springframework.ws.server.endpoint.annotation.ResponsePayload
 
-@RequiredArgsConstructor
-@WebService(
-    serviceName = "LocationsPortService",
-    targetNamespace = "http://ifmo.com/se/route-management",
-)
-@Controller
-open class LocationsController(
+@Endpoint
+class LocationsController(
     private val locationService: LocationService,
 ) {
     private companion object : KLogging()
 
-    @WebMethod(operationName = "getLocationById")
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getLocationById")
+    @ResponsePayload
     fun getLocationById(
-        @WebParam(name = "id") id: Long
-    ): LocationDto? = locationService.getLocationById(id)
+        @RequestPayload request: GetLocationByIdRequest,
+    ): GetLocationByIdResponse = locationService.getLocationById(request.id).let {
+        GetLocationByIdResponse().apply {
+            this.location = let@ it
+        }
+    }
 
-    @WebMethod(operationName = "getLocations")
+    @PayloadRoot(namespace = Namespace.NAMESPACE, localPart = "getLocations")
+    @ResponsePayload
     fun getLocations(
-        @WebParam(name = "limit") limit: Int?,
-        @WebParam(name = "offset") offset: Int?
-    ): LocationResponseDto? =
+        @RequestPayload request: GetLocationsRequest,
+    ): GetLocationsResponse =
         locationService.getLocations(
-            limit = limit,
-            offset = offset
-        )
+            limit = request.limit,
+            offset = request.offset,
+        ).let {
+            GetLocationsResponse().apply {
+                this.locations = let@ it
+            }
+        }
 }

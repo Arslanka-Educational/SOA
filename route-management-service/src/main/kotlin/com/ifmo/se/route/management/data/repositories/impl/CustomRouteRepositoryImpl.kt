@@ -1,6 +1,6 @@
 package org.example.com.ifmo.se.route.management.data.repositories.impl
 
-import com.ifmo.se.route.management.wsdl.GetRoutesFilterParameterDto
+import com.ifmo.se.route_management.GetRoutesFilterParameterDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.PersistenceContext
 import jakarta.persistence.TypedQuery

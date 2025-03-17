@@ -1,9 +1,8 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
-import com.ifmo.se.route.management.wsdl.LocationDto
-import com.ifmo.se.route.management.wsdl.LocationResponseDto
+import com.ifmo.se.route_management.LocationDto
+import com.ifmo.se.route_management.LocationResponseDto
 import jakarta.persistence.EntityNotFoundException
-import lombok.RequiredArgsConstructor
 import mapToDto
 import mu.KLogging
 import org.example.com.ifmo.se.route.management.data.mappers.toResponse
@@ -15,8 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
-@RequiredArgsConstructor
-open class LocationServiceImpl(
+class LocationServiceImpl(
     private val locationRepository: LocationRepository,
 ) : LocationService {
     private companion object : KLogging()

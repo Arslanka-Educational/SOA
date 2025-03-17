@@ -1,16 +1,15 @@
 package org.example.com.ifmo.se.route.management.services.impl
 
-import com.ifmo.se.route.management.wsdl.GetRoutesFilterParameterDto
-import com.ifmo.se.route.management.wsdl.RouteDto
-import com.ifmo.se.route.management.wsdl.RouteResponseDto
-import com.ifmo.se.route.management.wsdl.RouteUpsertRequestDto
+import com.ifmo.se.route_management.GetRoutesFilterParameterDto
+import com.ifmo.se.route_management.RouteDto
+import com.ifmo.se.route_management.RouteResponseDto
+import com.ifmo.se.route_management.RouteUpsertRequestDto
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityNotFoundException
 import lombok.RequiredArgsConstructor
 import mu.KLogging
 import org.example.com.ifmo.se.route.management.data.mappers.mapToDto
 import org.example.com.ifmo.se.route.management.data.mappers.mapToEntity
-import org.example.com.ifmo.se.route.management.data.mappers.xmlGregorianCalendarToOffsetDateTime
 import org.example.com.ifmo.se.route.management.data.models.Coordinates
 import org.example.com.ifmo.se.route.management.data.models.Location
 import org.example.com.ifmo.se.route.management.data.models.Route
@@ -21,10 +20,8 @@ import org.example.com.ifmo.se.route.management.services.RouteService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-
 @Service
-@RequiredArgsConstructor
-open class RouteServiceImpl(
+class RouteServiceImpl(
     private val routeRepository: RouteRepository,
     private val locationRepository: LocationRepository,
     private val entityManager: EntityManager,

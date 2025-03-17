@@ -1,8 +1,8 @@
 package org.example.com.ifmo.se.route.management.data.mappers
 
-import com.ifmo.se.route.management.wsdl.CoordinatesDto
-import com.ifmo.se.route.management.wsdl.LocationDto
-import com.ifmo.se.route.management.wsdl.RouteDto
+import com.ifmo.se.route_management.CoordinatesDto
+import com.ifmo.se.route_management.LocationDto
+import com.ifmo.se.route_management.RouteDto
 import mapToDto
 import org.example.com.ifmo.se.route.management.data.models.Coordinates
 import org.example.com.ifmo.se.route.management.data.models.Location
